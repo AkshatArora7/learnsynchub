@@ -21,7 +21,9 @@ const LoginForm = () => {
       await login(email, password, rememberMe);
       navigate('/'); 
     } catch (error) {
-      console.error("Error logging in:", error.message);
+        console.error("Error logging in:", error.message);
+      
+      
     }
 
     setLoading(false); // Set loading state to false when login completes

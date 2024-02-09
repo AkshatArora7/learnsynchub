@@ -7,8 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem('isAuthenticated');
-    if (storedAuth === 'true') {
+    const storedAuth = localStorage.getItem("isAuthenticated");
+    if (storedAuth === "true") {
       setIsAuthenticated(true);
     }
   }, []);
@@ -17,19 +17,26 @@ export const AuthProvider = ({ children }) => {
     try {
       await auth.signInWithEmailAndPassword(email, password);
       if (rememberMe) {
-        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem("isAuthenticated", "true");
         // You can store additional user data here if needed
       }
       setIsAuthenticated(true);
     } catch (error) {
-      console.error("Error logging in:", error.message);
+      if (
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/invalid-credential"
+      ) {
+        alert("Incorrect password. Please try again.");
+      } else {
+        console.error("Error logging in:", error.code);
+      }
     }
   };
 
   const logout = async () => {
     try {
       await auth.signOut();
-      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem("isAuthenticated");
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Error logging out:", error.message);
