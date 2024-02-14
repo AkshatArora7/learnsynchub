@@ -5,6 +5,8 @@ import { useAuth } from "../../auth";
 import CourseCard from "../../Components/Widgets/CourseCard/CourseCard";
 import Course from "../../Models/Course";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
+import instructors from "../../Data/instructors";
+import TopInstructors from "../../Components/Widgets/TopInstructors/TopInstructors";
 
 const MainPage = () => {
   const courses = [
@@ -58,6 +60,10 @@ const MainPage = () => {
     ),
   ];
 
+
+  const topInstructors = instructors.sort((a, b) => b.getAverageRating() - a.getAverageRating()).slice(0, 7);
+  console.log(topInstructors);
+
   const navigate = useNavigate();
   const { logout } = useAuth();
   const handleLogout = async () => {
@@ -80,6 +86,15 @@ const MainPage = () => {
               <CourseCard key={index} course={course} />
             ))}
           </div>
+        </div>
+        <div className="topInstructors">
+          <h3>Top Instructors</h3>
+          <div className="instructorsList">
+
+            {topInstructors.map((instructor, index) => (
+              <TopInstructors key={index} instructor={instructor} />
+              ))}
+              </div>
         </div>
       </div>
     </div>

@@ -14,3 +14,16 @@
   padding: 15px;
   flex-wrap: wrap;
 }
+
+.topInstructors{
+    .instructorsList{
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        margin-top: 10px;
+    }
+
+    .instructorsList::-webkit-scrollbar {
+        display: none;
+      }
+}
