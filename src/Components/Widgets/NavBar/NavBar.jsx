@@ -5,7 +5,6 @@ import './NavBar.scss'
 import ProfilePopOut from '../ProfilePopOut/ProilePopOut'
 
 const NavBar = ({handleLogout}) => {
-
     const [isProfilePopupOpen, setIsProfilePopupOpen] = useState(false);
 
     const toggleProfilePopup = () => {
@@ -14,7 +13,7 @@ const NavBar = ({handleLogout}) => {
     
   return (
     <nav>
-        <h1>LearnSync Hub</h1>
+      <h1>LearnSync Hub</h1>
       <div className="actionButtons">
       <div onClick={handleLogout}><IoLogOutOutline /></div>
       <div onClick={toggleProfilePopup}><IoMdSettings /></div>

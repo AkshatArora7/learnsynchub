@@ -5,6 +5,7 @@ import { useAuth } from "../../auth";
 import CourseCard from "../../Components/Widgets/CourseCard/CourseCard";
 import Course from "../../Models/Course";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
+import Footer from "../../Components/Widgets/Footer/Footer";
 import instructors from "../../Data/instructors";
 import TopInstructors from "../../Components/Widgets/TopInstructors/TopInstructors";
 
@@ -97,6 +98,7 @@ const MainPage = () => {
               </div>
         </div>
       </div>
+        <Footer/>
     </div>
   );
 };
