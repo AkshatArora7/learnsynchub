@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './RegisterForm.scss'
 import { FaUser, FaLock  } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
-import loadingGIF from "../Assets/loading.gif"
+import loadingGIF from "../../Components/Assets/loading.gif"
 import { useAuth } from '../../auth';
 
 

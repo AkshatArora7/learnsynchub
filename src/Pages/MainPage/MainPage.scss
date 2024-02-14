@@ -1,0 +1,16 @@
+.mainPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainPageWrapper {
+  padding-top: 80px;
+}
+
+.course-list {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,24 @@
+nav{
+    align-self: center;
+    display: flex;
+    background-color: white;
+    width: 97%;
+    position: fixed;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    border-radius: 40px;
+    padding: 0px 20px;
+
+    .actionButtons{
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        div{
+            cursor: pointer;
+            font-size: large;
+        }
+    }
+}

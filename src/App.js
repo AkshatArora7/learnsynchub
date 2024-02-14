@@ -1,10 +1,9 @@
-
 import './App.css';
-import LoginForm from './Components/LoginForm/LoginForm';
+import LoginForm from './Pages/LoginForm/LoginForm';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RegisterForm from './Components/RegisterForm/RegisterForm';
-import ErrorPage from './Components/ErrorPage/ErrorPage';
-import MainPage from './Components/MainPage/MainPage';
+import RegisterForm from './Pages/RegisterForm/RegisterForm';
+import ErrorPage from './Pages/ErrorPage/ErrorPage';
+import MainPage from './Pages/MainPage/MainPage';
 import PrivateRoute from './PrivateRoute'
 
 function App() {

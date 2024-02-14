@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./LoginForm.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
-import loadingGIF from "../Assets/loading.gif";
+import loadingGIF from "../../Components/Assets/loading.gif";
 import { useAuth } from "../../auth";
 
 const LoginForm = () => {

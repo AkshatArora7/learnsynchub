@@ -1,0 +1,83 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 435px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    align-items: center;
+  
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+    img {
+      width: 100%;
+      height: auto;
+    }
+  
+    &__details {
+      width: 100%;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+  
+    &__title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  
+    &__instructor {
+      font-size: 10px;
+      color: #666;
+      margin-bottom: 10px;
+      align-self: flex-end;
+    }
+  
+    &__shortDesc {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+  
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  
+    &__dateReleased {
+      color: #666;
+    }
+  
+    .card__totalStudent {
+      display: flex;
+      align-items: center;
+      color: #666;
+  
+      svg {
+        margin-right: 5px;
+      }
+    }
+  
+    .card__joinBtn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 5px 0px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      width: 80%;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+  
