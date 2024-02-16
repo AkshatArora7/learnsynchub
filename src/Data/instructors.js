@@ -10,8 +10,8 @@ const instructors = [
     "john@example.com",
     "I am an experienced developer.",
     [
-      { courseId: 1, totalStudent: 50, rating: 4.5 },
-      { courseId: 2, totalStudent: 30, rating: 4.2 },
+      { courseId: 1, totalStudent: 50, rating: 4 },
+      { courseId: 2, totalStudent: 30, rating: 4 },
     ],
     4.35,
     [
@@ -26,13 +26,13 @@ const instructors = [
     "jane@example.com",
     "I specialize in web development.",
     [
-      { courseId: 3, totalStudent: 40, rating: 4.8 },
-      { courseId: 4, totalStudent: 20, rating: 4.3 },
+      { courseId: 3, totalStudent: 40, rating: 4 },
+      { courseId: 4, totalStudent: 20, rating: 4 },
     ],
     4.55,
     [
-      { userId: 789, rating: 4.5, review: "Very knowledgeable!" },
-      { userId: 101, rating: 4.7, review: "Clear explanations!" },
+      { userId: 789, rating: 4, review: "Very knowledgeable!" },
+      { userId: 101, rating: 4, review: "Clear explanations!" },
     ],
     placeholderImgUrl
   ),
@@ -42,13 +42,13 @@ const instructors = [
     "alice@example.com",
     "I teach programming and software engineering.",
     [
-      { courseId: 5, totalStudent: 35, rating: 4.6 },
-      { courseId: 6, totalStudent: 25, rating: 4.1 },
+      { courseId: 2, totalStudent: 35, rating: 4 },
+      { courseId: 1, totalStudent: 25, rating: 4 },
     ],
     4.35,
     [
-      { userId: 111, rating: 4.2, review: "Helpful course!" },
-      { userId: 222, rating: 4.5, review: "Enjoyed learning!" },
+      { userId: 111, rating: 4, review: "Helpful course!" },
+      { userId: 222, rating: 4, review: "Enjoyed learning!" },
     ],
     placeholderImgUrl
   ),
@@ -58,13 +58,13 @@ const instructors = [
     "bob@example.com",
     "I have a passion for teaching.",
     [
-      { courseId: 7, totalStudent: 45, rating: 4.4 },
-      { courseId: 8, totalStudent: 15, rating: 4.0 },
+      { courseId: 2, totalStudent: 45, rating: 4 },
+      { courseId: 3, totalStudent: 15, rating: 2 },
     ],
     4.2,
     [
-      { userId: 333, rating: 4.3, review: "Good course!" },
-      { userId: 444, rating: 4.1, review: "Learned a lot!" },
+      { userId: 333, rating: 4, review: "Good course!" },
+      { userId: 444, rating: 4, review: "Learned a lot!" },
     ],
     placeholderImgUrl
   ),
@@ -74,13 +74,13 @@ const instructors = [
     "eva@example.com",
     "I love helping students learn new skills.",
     [
-      { courseId: 9, totalStudent: 55, rating: 4.7 },
-      { courseId: 10, totalStudent: 10, rating: 4.5 },
+      { courseId: 4, totalStudent: 55, rating: 5 },
+      { courseId: 3, totalStudent: 10, rating: 1 },
     ],
     4.6,
     [
-      { userId: 555, rating: 4.8, review: "Fantastic course!" },
-      { userId: 666, rating: 4.6, review: "Highly recommended!" },
+      { userId: 555, rating: 4, review: "Fantastic course!" },
+      { userId: 666, rating: 4, review: "Highly recommended!" },
     ],
     placeholderImgUrl
   ),
@@ -90,13 +90,13 @@ const instructors = [
     "sarah@example.com",
     "I specialize in machine learning and data science.",
     [
-      { courseId: 11, totalStudent: 60, rating: 4.9 },
-      { courseId: 12, totalStudent: 25, rating: 4.7 },
+      { courseId: 1, totalStudent: 60, rating: 2 },
+      { courseId: 2, totalStudent: 25, rating: 4 },
     ],
     4.8,
     [
-      { userId: 777, rating: 4.9, review: "Excellent instructor!" },
-      { userId: 888, rating: 4.8, review: "Great teaching!" },
+      { userId: 777, rating: 4, review: "Excellent instructor!" },
+      { userId: 888, rating: 4, review: "Great teaching!" },
     ],
     placeholderImgUrl
   ),
@@ -106,13 +106,13 @@ const instructors = [
     "michael@example.com",
     "I am passionate about frontend development.",
     [
-      { courseId: 13, totalStudent: 70, rating: 4.6 },
-      { courseId: 14, totalStudent: 35, rating: 4.4 },
+      { courseId: 3, totalStudent: 70, rating: 4 },
+      { courseId: 4, totalStudent: 35, rating: 4 },
     ],
     4.5,
     [
-      { userId: 999, rating: 4.7, review: "Very helpful instructor!" },
-      { userId: 1010, rating: 4.5, review: "Clear explanations!" },
+      { userId: 999, rating: 4, review: "Very helpful instructor!" },
+      { userId: 1010, rating: 4, review: "Clear explanations!" },
     ],
     placeholderImgUrl
   ),
@@ -122,13 +122,13 @@ const instructors = [
     "emma@example.com",
     "I teach web design and development.",
     [
-      { courseId: 15, totalStudent: 45, rating: 4.3 },
-      { courseId: 16, totalStudent: 20, rating: 4.0 },
+      { courseId: 2, totalStudent: 45, rating: 4 },
+      { courseId: 1, totalStudent: 20, rating: 4 },
     ],
     4.2,
     [
-      { userId: 1111, rating: 4.3, review: "Good course content!" },
-      { userId: 1212, rating: 4.1, review: "Learned a lot!" },
+      { userId: 1111, rating: 4, review: "Good course content!" },
+      { userId: 1212, rating: 4, review: "Learned a lot!" },
     ],
     placeholderImgUrl
   ),
@@ -138,13 +138,13 @@ const instructors = [
     "david@example.com",
     "I have years of experience in backend development.",
     [
-      { courseId: 17, totalStudent: 55, rating: 4.5 },
-      { courseId: 18, totalStudent: 30, rating: 4.2 },
+      { courseId: 2, totalStudent: 55, rating: 4 },
+      { courseId: 3, totalStudent: 30, rating: 4 },
     ],
     4.35,
     [
-      { userId: 1313, rating: 4.4, review: "Well-organized course!" },
-      { userId: 1414, rating: 4.6, review: "Engaging teaching style!" },
+      { userId: 1313, rating: 4, review: "Well-organized course!" },
+      { userId: 1414, rating: 4, review: "Engaging teaching style!" },
     ],
     placeholderImgUrl
   ),
@@ -154,13 +154,13 @@ const instructors = [
     "laura@example.com",
     "I am passionate about teaching programming fundamentals.",
     [
-      { courseId: 19, totalStudent: 65, rating: 4.7 },
-      { courseId: 20, totalStudent: 40, rating: 4.3 },
+      { courseId: 4, totalStudent: 65, rating: 4 },
+      { courseId: 1, totalStudent: 40, rating: 4 },
     ],
     4.5,
     [
-      { userId: 1515, rating: 4.8, review: "Amazing course!" },
-      { userId: 1616, rating: 4.6, review: "Highly recommend!" },
+      { userId: 1515, rating: 4, review: "Amazing course!" },
+      { userId: 1616, rating: 4, review: "Highly recommend!" },
     ],
     placeholderImgUrl
   ),
