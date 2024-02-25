@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, firestore } from "./Firebase";
+import useLoggedInUser from "./loggedInUser";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const loggedInUser = useLoggedInUser();
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("isAuthenticated");
@@ -12,15 +14,39 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
   }, []);
-
+  
+  const getUserId = () => {
+    if (isAuthenticated) {
+      const user = auth.currentUser;
+      console.log(user.uid);
+      return user ? user.uid : null;
+    } else {
+      return null;
+    }
+  };
+  
+  
   const login = async (email, password, rememberMe) => {
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      localStorage.setItem('uid', userCredential.user.uid)
+      
       if (rememberMe) {
         localStorage.setItem("isAuthenticated", "true");
         // You can store additional user data here if needed
       }
+      
       setIsAuthenticated(true);
+      
+      // Get the current user
+      const currentUser = userCredential.user;
+
+  
+      // Update Firestore document with last seen timestamp
+      await firestore.collection("users").doc(currentUser.uid).update({
+        lastSeen: new Date.now().toString(),
+      });
+  
     } catch (error) {
       if (
         error.code === "auth/wrong-password" ||
@@ -32,16 +58,30 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
+  
 
   const logout = async () => {
     try {
       await auth.signOut();
       localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("uid");
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Error logging out:", error.message);
     }
   };
+
+  const handleForgotPassword = async (email) => {
+    try {
+      await auth.sendPasswordResetEmail(email);
+      alert("Password reset email sent. Please check your inbox.");
+    } catch (error) {
+      console.error("Error sending password reset email:", error.message);
+      alert("Failed to send password reset email. Please try again.");
+    }
+  };
+
+
 
   const register = async (email, password, confirmPassword) => {
     try {
@@ -54,11 +94,18 @@ export const AuthProvider = ({ children }) => {
         password
       );
 
+      localStorage.setItem('uid', user.uid)
+
+
       await firestore.collection("users").doc(user.uid).set({
         email: user.email,
-        user: user.uid,
         password: password,
+        joinedAt: Date.now().toString(),
+        lastSeen: Date.now().toString(),
+        isTeacher: false
       });
+
+      setIsAuthenticated(true);
 
       console.log("User registered successfully!");
     } catch (error) {
@@ -67,7 +114,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, register }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, register, getUserId, handleForgotPassword, loggedInUser }}>
       {children}
     </AuthContext.Provider>
   );

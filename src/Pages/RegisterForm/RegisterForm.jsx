@@ -46,11 +46,11 @@ const RegisterForm = () => {
                 <FaUser className='register__icon'/>
             </div>
             <div className='register__inputBox'>
-                <input type='text' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                <input type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} required/>
                 <FaLock className='register__icon'/>
             </div>
             <div className='register__inputBox'>
-                <input type='text' placeholder='Re-Enter Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
+                <input type='password' placeholder='Re-Enter Password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
                 <FaLock className='register__icon'/>
             </div>
             <button className='register__submitBtn' type='submit'>

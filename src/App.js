@@ -6,6 +6,8 @@ import ErrorPage from './Pages/ErrorPage/ErrorPage';
 import MainPage from './Pages/MainPage/MainPage';
 import PrivateRoute from './PrivateRoute'
 import InstructorProfile from './Pages/InstructorProfile/InstructorProfile'
+import AccountsPage from './Pages/Profile/AccountsPage';
+import CreateCourse from './Pages/CreateCourse/CreateCourse';
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
           <Route exact path='/' element={<PrivateRoute/>}>
             <Route exact path='/' element={<MainPage/>}/>
             <Route exact path='/instructor/:id' element={<InstructorProfile/>}/>
+            <Route exact path='/profile/:id' element={<AccountsPage/>}/>
+            <Route exact path='/create' element={<CreateCourse/>}/>
           </Route>
             <Route path="*" element={<ErrorPage />} />
         </Routes>

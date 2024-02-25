@@ -1,0 +1,105 @@
+.course-page {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    form {
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+  
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+      }
+  
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  
+    .video-preview {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #708090;
+      display: flex;
+      border-radius: 10px;
+
+      &__info{
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        margin-right: 20px;
+      }
+
+      &__media{
+        border-left: 1px dashed #708090;
+        padding-left: 20px;
+        display: flex;
+        flex-direction: row;
+      }
+  
+      video {
+        width: 350px;
+        height: 200px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+  
+      p {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+  
+      img {
+        width: 350px;
+        height: 200px;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+    }
+  
+    .thumbnailPreview {
+      max-width: 100px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  }
+
+  .buttonContainer{
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top: 1px solid #708090;
+    align-items: center;
+  }
+
+  .uploadProgress{
+    width: 100%;
+    height: 20px;
+  }
+  

@@ -7,11 +7,13 @@ import { useAuth } from "../../auth";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, handleForgotPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +52,7 @@ const LoginForm = () => {
           </div>
           <div className="login__inputBox">
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -63,7 +65,7 @@ const LoginForm = () => {
               <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
               Remember me
             </label>
-            <a href="#">Forgot Password?</a>
+            <p className="forgotPassword" onClick={() => setShowResetPasswordModal(true)}>Forgot Password?</p>
           </div>
           <button className="login__submitBtn" type="submit">
             {loading ? <img src={loadingGIF} alt="Loading..." /> : "Login"}
@@ -75,7 +77,25 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
+      {showResetPasswordModal && (
+        <div className="modal">
+          <div className="modal__content">
+            <span className="modal__close" onClick={() => setShowResetPasswordModal(false)}>&times;</span>
+            <h2>Reset Password</h2>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button onClick={handleForgotPassword}>Send Reset Email</button>
+          </div>
+        </div>
+      )}
+
     </div>
+
   );
 };
 
