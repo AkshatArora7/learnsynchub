@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { firestore, storage } from "../../Firebase"; // Assuming you have Firebase initialized
 import "./CreateCourse.scss"; // Your CSS file for styling
 import Modal from "../../Components/Widgets/Modal/Modal";
+import { FaUpload } from "react-icons/fa";
 
 const CreateCourse = () => {
   const [title, setTitle] = useState("");
@@ -15,6 +16,10 @@ const CreateCourse = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [courseThumbnailPreview, setCourseThumbnailPreview] = useState(null);
+  const [courseThumbnail, setCourseThumbnail] = useState(null);
+
+  const uid = localStorage.getItem("uid");
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -28,6 +33,17 @@ const CreateCourse = () => {
     const file = e.target.files[0];
     setSelectedVideo(file);
     // Generate thumbnail here if needed
+  };
+
+  const handleCourseThumbnailSelect = (e) => {
+    const file = e.target.files[0];
+    setCourseThumbnail(file);
+    // Preview the selected image
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCourseThumbnailPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleThumbnailSelect = (e) => {
@@ -47,7 +63,6 @@ const CreateCourse = () => {
     console.log("videoData", videoData);
     setVideos([...videos, videoData]);
     setIsModalOpen(false);
-    // Clear input fields after adding the video
     setVideoTitle("");
     setVideoDescription("");
     setSelectedVideo(null);
@@ -61,6 +76,12 @@ const CreateCourse = () => {
       title,
       price,
       description,
+      createdBy: uid,
+      creationTime: Date.now().toString(),
+      lastUpdated: Date.now().toString(),
+      reviews: [],
+      courseThumbnail: courseThumbnail,
+      studentsEnrolled: [],
     });
 
     for (const videoData of videos) {
@@ -134,6 +155,26 @@ const CreateCourse = () => {
           onChange={(e) => setDescription(e.target.value)}
           required
         />
+        <label htmlFor="courseImage">Course Thumbnail:</label>
+        <input
+          type="file"
+          id="courseThumbnail"
+          accept="image/*"
+          onChange={handleCourseThumbnailSelect}
+          required
+          className="inputfile"
+        />
+        <label htmlFor="courseThumbnail" className="courseThumbnailLabel">
+          <FaUpload />
+          <p>Choose File</p>
+        </label>
+
+        {/* Preview of the selected course thumbnail */}
+        {courseThumbnailPreview && (
+          <div className="thumbnail-preview">
+            <img src={courseThumbnailPreview} alt="Course Thumbnail Preview" />
+          </div>
+        )}
         <label>Videos:</label>
         <button onClick={handleModalOpen}>Add Video</button>
         {/* Display selected videos with titles */}
@@ -179,7 +220,9 @@ const CreateCourse = () => {
               accept="video/*"
               onChange={handleVideoSelect}
               required
+              id="selectVideo"
             />
+            <label htmlFor="selectVideo"><FaUpload/><p>Choose Video</p></label>
             {/* Display thumbnail */}
             {thumbnail && (
               <img
@@ -195,26 +238,32 @@ const CreateCourse = () => {
               accept="image/*"
               onChange={handleThumbnailSelect}
               required
+              id="selectThumbnail"
             />
+            <label htmlFor="selectThumbnail"><FaUpload/><p>Choose Thumbnail</p></label>
             <button type="button" onClick={handleAddVideo}>
               Add Video
             </button>
           </form>
         </Modal>
         <div className="buttonContainer">
-        {isUploading ? (
-          <p>
-            Uploading Course....
-            <br />
-            Please wait
-          </p>
-        ) : (
-          <button type="submit">Create Course</button>
+          {isUploading ? (
+            <p>
+              Uploading Course....
+              <br />
+              Please wait
+            </p>
+          ) : (
+            <button type="submit">Create Course</button>
           )}
-        {isUploading && 
-        <progress className="uploadProgress" value={uploadProgress} max="100" />
-        }
-          </div>
+          {isUploading && (
+            <progress
+              className="uploadProgress"
+              value={uploadProgress}
+              max="100"
+            />
+          )}
+        </div>
       </form>
     </div>
   );
