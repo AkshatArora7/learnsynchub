@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth";
@@ -6,12 +6,11 @@ import CourseCard from "../../Components/Widgets/CourseCard/CourseCard";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
 import Footer from "../../Components/Widgets/Footer/Footer";
 import instructors from "../../Data/instructors";
-import courses from "../../Data/courses";
+import { firestore } from "../../Firebase";
 import TopInstructors from "../../Components/Widgets/TopInstructors/TopInstructors";
 
 const MainPage = () => {
-  
-
+  const [courses, setCourses] = useState([])
 
   const topInstructors = instructors.sort((a, b) => b.getAverageRating() - a.getAverageRating()).slice(0, 7);
   console.log(topInstructors);
@@ -27,6 +26,28 @@ const MainPage = () => {
       console.error("Error logging out:", error.message);
     }
   };
+
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const coursesSnapshot = await firestore.collection("courses").limit(8).get();
+        const coursesData = coursesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCourses(coursesData);
+      } catch (error) {
+        console.error("Error fetching courses:", error.message);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+
+
+
   return (
     <div className="mainPage">
       <NavBar handleLogout={handleLogout} />

@@ -5,7 +5,9 @@
 }
 
 .mainPageWrapper {
+  padding: 20px;
   padding-top: 80px;
+
 }
 
 .course-list {
@@ -13,6 +15,7 @@
   gap: 20px;
   padding: 15px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .topInstructors{

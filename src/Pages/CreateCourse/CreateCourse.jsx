@@ -18,6 +18,7 @@ const CreateCourse = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [courseThumbnailPreview, setCourseThumbnailPreview] = useState(null);
   const [courseThumbnail, setCourseThumbnail] = useState(null);
+  const [level, setLevel] = useState("beginner");
 
   const uid = localStorage.getItem("uid");
 
@@ -82,6 +83,8 @@ const CreateCourse = () => {
       reviews: [],
       courseThumbnail: courseThumbnail,
       studentsEnrolled: [],
+      level,
+      instructorName: "Instructor Default"
     });
 
     for (const videoData of videos) {
@@ -155,6 +158,14 @@ const CreateCourse = () => {
           onChange={(e) => setDescription(e.target.value)}
           required
         />
+        <div className="level">
+        <label>Level:</label>
+        <select value={level} onChange={(e) => setLevel(e.target.value)}>
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        </div>
         <label htmlFor="courseImage">Course Thumbnail:</label>
         <input
           type="file"
