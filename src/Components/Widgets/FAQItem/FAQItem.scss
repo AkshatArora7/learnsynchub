@@ -1,0 +1,25 @@
+.faq-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  
+    .question {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  
+    .answer {
+      margin-bottom: 10px;
+    }
+  
+    .metadata {
+      font-size: 0.9rem;
+      color: #666;
+  
+      .time {
+        margin-right: 10px;
+      }
+    }
+  }
+  

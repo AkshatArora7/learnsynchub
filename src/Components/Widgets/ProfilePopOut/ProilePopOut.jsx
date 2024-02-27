@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ProfilePopOut.scss";
 import { FaBook, FaUpload, FaUser } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -7,18 +7,17 @@ import { useAuth } from "../../../auth";
 import { useNavigate } from "react-router-dom";
 
 const ProfilePopOut = ({ onClose }) => {
-  // State to manage which menu option is active
-  const [activeMenu, setActiveMenu] = useState("");
   const { getUserId, loggedInUser } = useAuth();
   const navigate = useNavigate();
 
-  const handleMenuClick = (menu) => {
-    setActiveMenu(menu);
-  };
 
   const handleProfileClick = (uid) => {
     navigate(`/profile/${uid}`);
   };
+
+  const handleClick = (destination)=>{
+    navigate(`/${destination}`);
+  }
 
   const handleCreateButton=()=>{
     navigate('/create')
@@ -29,26 +28,26 @@ const ProfilePopOut = ({ onClose }) => {
     <div className="my-profile-popup">
       <div className="menu">
         <button
-          className={`menu-item ${activeMenu === "profile" ? "active" : ""}`}
+          className={`menu-item`}
           onClick={() => handleProfileClick(getUserId())}
         >
           Profile <FaUser />
         </button>
-        {loggedInUser.isTeacher == true ? <button
-          className={`menu-item ${activeMenu === "messages" ? "active" : ""}`}
+        {loggedInUser.isTeacher === true ? <button
+          className={`menu-item`}
           onClick={() => handleCreateButton()}
         >
           Create <FaUpload />
         </button>:<></>}
         <button
-          className={`menu-item ${activeMenu === "courses" ? "active" : ""}`}
-          onClick={() => handleMenuClick("courses")}
+          className={`menu-item`}
+          onClick={() => handleClick("coursesEnrolled")}
         >
           Courses Enrolled <FaBook />
         </button>
         <button
-          className={`menu-item ${activeMenu === "messages" ? "active" : ""}`}
-          onClick={() => handleMenuClick("messages")}
+          className={`menu-item`}
+          onClick={() => handleClick("chat")}
         >
           Messages <PiChatsFill />
         </button>

@@ -11,7 +11,6 @@ const CoursePage = () => {
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     // Function to fetch course data
     const fetchCourseData = async () => {
@@ -50,10 +49,9 @@ const CoursePage = () => {
     fetchVideos();
   }, [id]);
 
-
-  const handleVideoPlay=(videoId)=>{
-    navigate(`/course/${id}/video/${videoId}}`)
-  }
+  const handleVideoPlay = (videoId, videoSnapshot) => {
+    navigate(`/course/${id}/video/${videoId}`, { state: { videoSnapshot } });
+  };
 
   if (!courseData) {
     return (
@@ -64,28 +62,62 @@ const CoursePage = () => {
   }
 
   return (
-    <div>
-      <h1>{courseData.title}</h1>
-      <p>Price: {courseData.price}</p>
-      <p>Description: {courseData.description}</p>
-      <p>Created By: {courseData.instructorName}</p>
-      {/* Display other course details */}
+    <div className="course-page">
+      <img
+        className="course-thumbnail"
+        src={courseData.courseThumbnail}
+        alt="Course Thumbnail"
+      />
+      <div className="all-course-details">
+        <div className="course-basic-details">
+          <div className="title-container">
+          <h1 className="course-title">{courseData.title}</h1>
+          <div className="join-button">Join Now</div>
+          </div>
+          <p className="course-description">{courseData.description}</p>
+          <p className="course-instructor">
+            Instructor: {courseData.instructorName}
+          </p>
+          <p className="course-time">
+            Creation Time: {new Date(courseData.creationTime).toLocaleString()}
+          </p>
+          <p className="course-videos">Number of Videos: {videos.length}</p>
 
-      <h2>Videos</h2>
-      <ul className="video-list">
-        {videos.map((video, index) => (
-          <li key={index} className="video-item">
-            <h3>{video.title}</h3>
-            <p>Description: {video.description}</p>
-            <div className="video-thumbnail" onClick={()=>{handleVideoPlay(video.id)}}>
-              <img src={video.thumbnailUrl} alt="" />
-              <div className="play-overlay">
-                <FaPlayCircle />
+          <ul className="reviews">
+            <h2>Reviews</h2>
+            {courseData.reviews.map((review, index) => (
+              <li key={index} className="review-item">
+                <p>{review}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+      <div className="video-list">
+        <h2>Videos</h2>
+        <ul className="videos-container">
+          {videos.map((video, index) => (
+            <li key={index} className="video-item">
+              
+              <div
+                className="video-thumbnail"
+                onClick={() => {
+                  handleVideoPlay(video.id, video);
+                }}
+              >
+                <img src={video.thumbnailUrl} alt="" />
+                <div className="play-overlay">
+                  <FaPlayCircle />
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <h3>{video.title}</h3>
+              <p>Description: {video.description}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      </div>
+
     </div>
   );
 };

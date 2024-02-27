@@ -9,7 +9,9 @@ import InstructorProfile from "./Pages/InstructorProfile/InstructorProfile";
 import AccountsPage from "./Pages/Profile/AccountsPage";
 import CreateCourse from "./Pages/CreateCourse/CreateCourse";
 import CoursePage from "./Pages/CoursePage/CoursePage";
+import ChatPage from "./Pages/ChatPage/ChatPage";
 import VideoPage from "./Pages/VideoPage/VideoPage";
+import CoursesEnrolledPage from "./Pages/CoursesEnrolledPage/CoursesEnrolledPage";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
             />
             <Route exact path="/profile/:id" element={<AccountsPage />} />
             <Route exact path="/create" element={<CreateCourse />} />
+            <Route exact path="/chat" element={<ChatPage />} />
+            <Route exact path="/coursesEnrolled" element={<CoursesEnrolledPage />} />
             <Route path="/course/:id/*" element={<CoursePage />} />
             <Route
               path="/course/:courseId/video/:videoId"

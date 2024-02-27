@@ -1,0 +1,32 @@
+/* ChatList.css */
+
+.chat-list {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .chat-list h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .chat-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .chat-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-list li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
