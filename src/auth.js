@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
   const getUserId = () => {
     if (isAuthenticated) {
       const user = auth.currentUser;
-      console.log(user.uid);
       return user ? user.uid : null;
     } else {
       return null;
