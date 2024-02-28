@@ -12,6 +12,7 @@ import CoursePage from "./Pages/CoursePage/CoursePage";
 import ChatPage from "./Pages/ChatPage/ChatPage";
 import VideoPage from "./Pages/VideoPage/VideoPage";
 import CoursesEnrolledPage from "./Pages/CoursesEnrolledPage/CoursesEnrolledPage";
+import CheckoutPage from "./Pages/CheckoutPage/CheckoutPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route exact path="/profile/:id" element={<AccountsPage />} />
             <Route exact path="/create" element={<CreateCourse />} />
             <Route exact path="/chat" element={<ChatPage />} />
+            <Route exact path="/checkout" element={<CheckoutPage />} />
             <Route exact path="/coursesEnrolled" element={<CoursesEnrolledPage />} />
             <Route path="/course/:id/*" element={<CoursePage />} />
             <Route

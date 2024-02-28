@@ -1,0 +1,71 @@
+.checkout{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+    background-color: #dbdbdb;
+    height: 100vh;
+
+
+    &__wrapper{
+        width: 500px;
+        margin-top: 20px;
+        text-align: center;
+        background-color: rgb(241, 241, 241);
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+
+
+    &__courseCard{
+        background-color: white;
+        border-radius: 15px;
+        
+        img{
+            border-radius: 15px 15px 0px 0px;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        div{
+            display: flex;
+            justify-content: space-between;
+            padding: 0px 20px;
+            padding-top: 5px;
+        }
+    }
+
+
+    &__paymentMethod{
+        text-align: start;
+        padding-top: 15px;
+    }
+
+    &__methodsWrapper{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    &__methods{
+        background-color: white;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 40px;
+
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+
+
+}

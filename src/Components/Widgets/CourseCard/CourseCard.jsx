@@ -2,8 +2,11 @@ import React from "react";
 import { FaUserAlt } from "react-icons/fa";
 import "./CourseCard.scss";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../auth";
+import { FaCheck } from "react-icons/fa";
 
 const CourseCard = ({ course }) => {
+  const { loggedInUser } = useAuth();
   const truncateDescription = (description) => {
     const words = description.split(" ");
     if (words.length > 5) {
@@ -16,9 +19,13 @@ const CourseCard = ({ course }) => {
   const formattedDate = date.toLocaleDateString();
   const navigate = useNavigate();
 
-  const handleJoin = ()=>{
-    navigate(`/course/${course.id}`)
-  }
+  const handleJoin = () => {
+    navigate(`/course/${course.id}`);
+  };
+
+  const isUserEnrolled = () => {
+    return course.studentsEnrolled.includes(loggedInUser.uid);
+  };
 
   return (
     <div className="card">
@@ -37,7 +44,15 @@ const CourseCard = ({ course }) => {
           </p>
         </div>
       </div>
-      <div className="card__joinBtn" onClick={handleJoin}>Join Now</div>
+      {isUserEnrolled() ? (
+        <div className="card__alreadyenrolled">
+          <FaCheck /> Enrolled Already
+        </div>
+      ) : (
+        <div className="card__joinBtn" onClick={handleJoin}>
+          Join Now
+        </div>
+      )}
     </div>
   );
 };

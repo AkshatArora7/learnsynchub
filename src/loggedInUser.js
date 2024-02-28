@@ -21,7 +21,6 @@ const useLoggedInUser = () => {
               isTeacher: userData.isTeacher ?? false,
               displayName: userData.displayName ?? "",
               photoURL: userData.photoURL ?? "",
-              // Add more properties as needed
             });
           } else {
             console.error("User data not found");

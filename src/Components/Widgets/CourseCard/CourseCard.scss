@@ -65,8 +65,20 @@
         margin-right: 5px;
       }
     }
+
+    &__alreadyenrolled{
+      background-color: green;
+      padding: 5px 20px;
+      border-radius: 25px;
+      color: white;
+      text-align: center;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      cursor: default;
+    }
   
-    .card__joinBtn {
+    &__joinBtn {
       background-color: #007bff;
       color: #fff;
       padding: 5px 0px;

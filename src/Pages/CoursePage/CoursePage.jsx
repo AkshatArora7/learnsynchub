@@ -49,6 +49,11 @@ const CoursePage = () => {
     fetchVideos();
   }, [id]);
 
+  const handleJoin = () => {
+    navigate("/checkout", { state: { course: courseData, courseId: id } });
+  };
+
+
   const handleVideoPlay = (videoId, videoSnapshot) => {
     navigate(`/course/${id}/video/${videoId}`, { state: { videoSnapshot } });
   };
@@ -72,7 +77,7 @@ const CoursePage = () => {
         <div className="course-basic-details">
           <div className="title-container">
           <h1 className="course-title">{courseData.title}</h1>
-          <div className="join-button">Join Now</div>
+          <div className="join-button" onClick={handleJoin}>Join Now for ${courseData.price}</div>
           </div>
           <p className="course-description">{courseData.description}</p>
           <p className="course-instructor">
