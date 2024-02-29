@@ -19,7 +19,7 @@ const useLoggedInUser = () => {
               uid: user.uid,
               email: user.email,
               isTeacher: userData.isTeacher ?? false,
-              displayName: userData.displayName ?? "",
+              name: userData.name ?? "",
               photoURL: userData.photoURL ?? "",
             });
           } else {
