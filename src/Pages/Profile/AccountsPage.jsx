@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "./AccountsPage.scss";
 import { FaEdit, FaSave } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { firestore } from "../../Firebase";
+import { firestore, storage } from "../../Firebase";
 import { useAuth } from "../../auth";
 
 const AccountsPage = () => {
   const { id } = useParams();
   const { loggedInUser } = useAuth();
+  const [user, setUser] = useState(loggedInUser);
   const [img, setImg] = useState(loggedInUser.photoURL);
-  const [user, setUser] = useState(null);
+  const [nameInput, setNameInput] = useState(loggedInUser.name);
+  const [emailInput, setEmailInput] = useState(loggedInUser.email);
+  const [addressInput, setAddressInput] = useState(loggedInUser.address);
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
@@ -35,18 +38,19 @@ const AccountsPage = () => {
     switch (field) {
       case "name":
         setIsEditingName(false);
+        setUser({ ...loggedInUser, name: nameInput }); // Update loggedInUser with new name
         break;
       case "email":
         setIsEditingEmail(false);
+        setUser({ ...loggedInUser, email: emailInput }); // Update loggedInUser with new email
         break;
       case "address":
         setIsEditingAddress(false);
+        setUser({ ...loggedInUser, address: addressInput }); // Update loggedInUser with new address
         break;
       default:
         break;
     }
-
-    alert("Profile details updated!");
   };
 
   const handleTeacherToggle = () => {
@@ -65,9 +69,39 @@ const AccountsPage = () => {
       });
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
+    try {
+      if (img !== loggedInUser.photoURL) {
+        // If a new image was uploaded
+        const storageRef = storage.ref(); // Get a reference to the storage root
+        const imageRef = storageRef.child(
+          `user_images/${loggedInUser.uid}/${img.name}`
+        ); // Create a reference to the image file
 
-    alert("Profile saved!");
+        // Upload the image to Firebase Storage
+        const snapshot = await imageRef.putString(img, "data_url");
+
+        // Get the download URL of the uploaded image
+        const downloadURL = await snapshot.ref.getDownloadURL();
+
+        // Update the photoURL field in Firestore with the new download URL
+        await firestore.collection("users").doc(loggedInUser.uid).update({
+          photoURL: downloadURL,
+        });
+      }
+
+      // Update other profile fields in Firestore
+      await firestore.collection("users").doc(loggedInUser.uid).update({
+        name: nameInput,
+        email: emailInput,
+        address: addressInput,
+      });
+
+      alert("Profile saved!");
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      alert("Failed to save profile. Please try again later.");
+    }
   };
 
   const fileInputRef = useRef(null);
@@ -115,13 +149,11 @@ const AccountsPage = () => {
             {isEditingName ? (
               <input
                 type="text"
-                value={loggedInUser.name}
-                onChange={(e) =>
-                  setUser({ ...loggedInUser, name: e.target.value })
-                }
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
               />
             ) : (
-              <div>{loggedInUser.name ?? <i>No Name</i>}</div>
+              <div>{nameInput ?? <i>No Name</i>}</div>
             )}
           </div>
           {isEditingName ? (
@@ -140,13 +172,13 @@ const AccountsPage = () => {
             {isEditingEmail ? (
               <input
                 type="email"
-                value={loggedInUser.email}
-                onChange={(e) =>
-                  setUser({ ...loggedInUser, email: e.target.value })
-                }
+                value={emailInput}
+                onChange={(e) => {
+                  setEmailInput(e.target.value);
+                }}
               />
             ) : (
-              <div>{loggedInUser.email}</div>
+              <div>{emailInput}</div>
             )}
           </div>
           {isEditingEmail ? (
@@ -165,13 +197,11 @@ const AccountsPage = () => {
             {isEditingAddress ? (
               <input
                 type="text"
-                value={user.address}
-                onChange={(e) =>
-                  setUser({ ...loggedInUser, address: e.target.value })
-                }
+                value={addressInput}
+                onChange={(e) => {setAddressInput(e.target.value)}}
               />
             ) : (
-              <div>{loggedInUser.address ?? <i>No Address Updated</i>}</div>
+              <div>{addressInput ?? <i>No Address Updated</i>}</div>
             )}
           </div>
           {isEditingAddress ? (
@@ -193,7 +223,9 @@ const AccountsPage = () => {
             onChange={handleTeacherToggle}
           />
         </div>
-        <button className="saveButton" onClick={handleSaveProfile}>Save Profile</button>
+        <button className="saveButton" onClick={handleSaveProfile}>
+          Save Profile
+        </button>
       </div>
     </div>
   );

@@ -13,22 +13,8 @@ const CoursePage = () => {
   const navigate = useNavigate();
   const { loggedInUser } = useAuth();
 
-  const fetchVideos = async () => {
-    if (isEnrolled()) {
-      try {
-        const videosRef = firestore
-          .collection("videos")
-          .where("courseId", "==", id);
-        const videosSnapshot = await videosRef.get();
-        const videosData = videosSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setVideos(videosData);
-      } catch (error) {
-        console.error("Error fetching videos:", error);
-      }
-    }
+  const isEnrolled = () => {
+    return courseData.studentsEnrolled.includes(loggedInUser.uid);
   };
 
   useEffect(() => {
@@ -38,11 +24,27 @@ const CoursePage = () => {
         const courseSnapshot = await courseRef.get();
         if (courseSnapshot.exists) {
           setCourseData(courseSnapshot.data());
+          if (courseSnapshot.data().studentsEnrolled.includes(loggedInUser.uid)) {
+            try {
+              const videosRef = firestore
+                .collection("videos")
+                .where("courseId", "==", id);
+              const videosSnapshot = await videosRef.get();
+              const videosData = videosSnapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
+              console.log(videosData)
+              setVideos(videosData);
+            } catch (error) {
+              console.error("Error fetching videos:", error);
+            }
+          }
         } else {
           console.log("Course not found");
         }
 
-        await fetchVideos();
+
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
@@ -57,10 +59,6 @@ const CoursePage = () => {
 
   const handleVideoPlay = (videoId, videoSnapshot) => {
     navigate(`/course/${id}/video/${videoId}`, { state: { videoSnapshot } });
-  };
-
-  const isEnrolled = () => {
-    return courseData.studentsEnrolled.includes(loggedInUser.uid);
   };
 
   if (!courseData) {
