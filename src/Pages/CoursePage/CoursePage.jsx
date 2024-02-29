@@ -4,31 +4,17 @@ import { firestore } from "../../Firebase";
 import loading from "../../Components/Assets/loading.gif";
 import "./CoursePage.scss";
 import { FaPlayCircle } from "react-icons/fa";
+import { useAuth } from "../../auth";
 
 const CoursePage = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
+  const { loggedInUser } = useAuth();
 
-  useEffect(() => {
-    // Function to fetch course data
-    const fetchCourseData = async () => {
-      try {
-        const courseRef = firestore.collection("courses").doc(id);
-        const courseSnapshot = await courseRef.get();
-        if (courseSnapshot.exists) {
-          setCourseData(courseSnapshot.data());
-        } else {
-          console.log("Course not found");
-        }
-      } catch (error) {
-        console.error("Error fetching course data:", error);
-      }
-    };
-
-    // Function to fetch videos
-    const fetchVideos = async () => {
+  const fetchVideos = async () => {
+    if (isEnrolled()) {
       try {
         const videosRef = firestore
           .collection("videos")
@@ -42,20 +28,39 @@ const CoursePage = () => {
       } catch (error) {
         console.error("Error fetching videos:", error);
       }
+    }
+  };
+
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const courseRef = firestore.collection("courses").doc(id);
+        const courseSnapshot = await courseRef.get();
+        if (courseSnapshot.exists) {
+          setCourseData(courseSnapshot.data());
+        } else {
+          console.log("Course not found");
+        }
+
+        await fetchVideos();
+      } catch (error) {
+        console.error("Error fetching course data:", error);
+      }
     };
 
-    // Call the fetch functions
     fetchCourseData();
-    fetchVideos();
   }, [id]);
 
   const handleJoin = () => {
     navigate("/checkout", { state: { course: courseData, courseId: id } });
   };
 
-
   const handleVideoPlay = (videoId, videoSnapshot) => {
     navigate(`/course/${id}/video/${videoId}`, { state: { videoSnapshot } });
+  };
+
+  const isEnrolled = () => {
+    return courseData.studentsEnrolled.includes(loggedInUser.uid);
   };
 
   if (!courseData) {
@@ -76,8 +81,14 @@ const CoursePage = () => {
       <div className="all-course-details">
         <div className="course-basic-details">
           <div className="title-container">
-          <h1 className="course-title">{courseData.title}</h1>
-          <div className="join-button" onClick={handleJoin}>Join Now for ${courseData.price}</div>
+            <h1 className="course-title">{courseData.title}</h1>
+            {isEnrolled() ? (
+              <div></div>
+            ) : (
+              <div className="join-button" onClick={handleJoin}>
+                Join Now for ${courseData.price}
+              </div>
+            )}
           </div>
           <p className="course-description">{courseData.description}</p>
           <p className="course-instructor">
@@ -98,31 +109,33 @@ const CoursePage = () => {
           </ul>
         </div>
 
-      <div className="video-list">
-        <h2>Videos</h2>
-        <ul className="videos-container">
-          {videos.map((video, index) => (
-            <li key={index} className="video-item">
-              
-              <div
-                className="video-thumbnail"
-                onClick={() => {
-                  handleVideoPlay(video.id, video);
-                }}
-              >
-                <img src={video.thumbnailUrl} alt="" />
-                <div className="play-overlay">
-                  <FaPlayCircle />
-                </div>
-              </div>
-              <h3>{video.title}</h3>
-              <p>Description: {video.description}</p>
-            </li>
-          ))}
-        </ul>
+        <div className="video-list">
+          <h2>Videos</h2>
+          {isEnrolled() ? (
+            <ul className="videos-container">
+              {videos.map((video, index) => (
+                <li key={index} className="video-item">
+                  <div
+                    className="video-thumbnail"
+                    onClick={() => {
+                      handleVideoPlay(video.id, video);
+                    }}
+                  >
+                    <img src={video.thumbnailUrl} alt="" />
+                    <div className="play-overlay">
+                      <FaPlayCircle />
+                    </div>
+                  </div>
+                  <h3>{video.title}</h3>
+                  <p>Description: {video.description}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>Enroll to see videos</div>
+          )}
+        </div>
       </div>
-      </div>
-
     </div>
   );
 };

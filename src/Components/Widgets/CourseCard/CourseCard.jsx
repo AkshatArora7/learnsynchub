@@ -4,6 +4,7 @@ import "./CourseCard.scss";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../auth";
 import { FaCheck } from "react-icons/fa";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const CourseCard = ({ course }) => {
   const { loggedInUser } = useAuth();
@@ -45,8 +46,11 @@ const CourseCard = ({ course }) => {
         </div>
       </div>
       {isUserEnrolled() ? (
-        <div className="card__alreadyenrolled">
-          <FaCheck /> Enrolled Already
+        <div className="card__enrolled">
+          <div className="card__alreadyenrolled">
+            <FaCheck /> Enrolled Already
+          </div>
+          <FaExternalLinkAlt className="link" onClick={handleJoin}/>
         </div>
       ) : (
         <div className="card__joinBtn" onClick={handleJoin}>
