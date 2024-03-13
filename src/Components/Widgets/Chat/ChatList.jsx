@@ -3,49 +3,66 @@ import { firestore } from '../../../Firebase';
 import './ChatList.scss';
 
 const ChatList = ({ uid, onSelect }) => {
-  const [instructors, setInstructors] = useState([]);
+  const [chatPartners, setChatPartners] = useState([]);
 
   useEffect(() => {
-    const fetchInstructors = async () => {
+    const fetchChatPartners = async () => {
       try {
-        const coursesRef = firestore.collection('courses');
-        const querySnapshot = await coursesRef.where('studentsEnrolled', 'array-contains', uid).get();
+        const senderQuerySnapshot = await firestore
+          .collection('messages')
+          .where('receiver', '==', uid)
+          .orderBy('timestamp', 'desc')
+          .limit(10)
+          .get();
 
-        const instructorIds = [];
-        querySnapshot.forEach((doc) => {
-          const courseData = doc.data();
-          const instructorId = courseData.createdBy;
-          if (!instructorIds.includes(instructorId)) {
-            instructorIds.push(instructorId);
+        const receiverQuerySnapshot = await firestore
+          .collection('messages')
+          .where('sender', '==', uid)
+          .orderBy('timestamp', 'desc')
+          .limit(10)
+          .get();
+
+        const senderPartners = await Promise.all(senderQuerySnapshot.docs.map(async (doc) => {
+          const senderUID = doc.data().sender;
+          const userDoc = await firestore.collection('users').doc(senderUID).get();
+          if (userDoc.exists) {
+            return { id: userDoc.id, ...userDoc.data() };
           }
-        });
+        }));
 
-        const instructorPromises = instructorIds.map(async (instructorId) => {
-          const instructorRef = firestore.collection('users').doc(instructorId);
-          const instructorDoc = await instructorRef.get();
-          if (instructorDoc.exists) {
-            return { id: instructorDoc.id, ...instructorDoc.data() };
+        const receiverPartners = await Promise.all(receiverQuerySnapshot.docs.map(async (doc) => {
+          const receiverUID = doc.data().receiver;
+          const userDoc = await firestore.collection('users').doc(receiverUID).get();
+          if (userDoc.exists) {
+            return { id: userDoc.id, ...userDoc.data() };
           }
-          console.log(instructorDoc)
-          return null;
-        });
+        }));
 
-        const instructorData = await Promise.all(instructorPromises);
-        setInstructors(instructorData.filter((instructor) => instructor !== null));
+        const allPartners = [...senderPartners, ...receiverPartners];
+        const uniquePartners = allPartners.reduce((acc, partner) => {
+          if (!acc.find((p) => p.id === partner.id)) {
+            acc.push(partner);
+          }
+          return acc;
+        }, []);
+
+        setChatPartners(uniquePartners);
       } catch (error) {
-        console.error('Error fetching instructors:', error);
+        console.error('Error fetching chat partners:', error);
       }
     };
 
-    fetchInstructors();
+    fetchChatPartners();
   }, [uid]);
 
   return (
     <div className='chat-list'>
-      <h2>Instructors Available to Chat</h2>
+      <h2>Recent Chats</h2>
       <ul>
-        {instructors.map((instructor) => (
-          <li onClick={()=>{onSelect(instructor)}} key={instructor.id}>{instructor.name}</li>
+        {chatPartners.map((partner) => (
+          <li onClick={() => onSelect(partner)} key={partner.id}>
+            {partner.name}
+          </li>
         ))}
       </ul>
     </div>

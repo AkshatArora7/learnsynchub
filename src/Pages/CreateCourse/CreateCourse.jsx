@@ -135,7 +135,7 @@ const CreateCourse = () => {
   };
 
   return (
-    <div className="course-page">
+    <div className="create-course-page">
       <h2>Create Course</h2>
       <form onSubmit={handleSubmit}>
         <label>Title:</label>

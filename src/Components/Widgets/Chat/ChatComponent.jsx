@@ -10,7 +10,7 @@ const ChatComponent = ({ otherUser }) => {
   const currentUser = getUserId();
   const messageContainerRef = useRef(null);
 
-  // Fetch messages from Firestore and subscribe to real-time updates
+
   useEffect(() => {
     if (otherUser != null) {
       const unsubscribe = firestore
@@ -28,7 +28,7 @@ const ChatComponent = ({ otherUser }) => {
     }
   }, [currentUser, otherUser]);
 
-  // Function to send a new message
+
   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
 

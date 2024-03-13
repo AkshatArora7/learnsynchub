@@ -61,6 +61,11 @@ const CoursePage = () => {
     navigate(`/course/${id}/video/${videoId}`, { state: { videoSnapshot } });
   };
 
+
+  const handleChat = ()=>{
+    navigate(`/chat`)
+  }
+
   if (!courseData) {
     return (
       <div className="loading">
@@ -81,7 +86,7 @@ const CoursePage = () => {
           <div className="title-container">
             <h1 className="course-title">{courseData.title}</h1>
             {isEnrolled() ? (
-              <div></div>
+              <div className="message-button" onClick={handleChat}>Message Instructor</div>
             ) : (
               <div className="join-button" onClick={handleJoin}>
                 Join Now for ${courseData.price}
