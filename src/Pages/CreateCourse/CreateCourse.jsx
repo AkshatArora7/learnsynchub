@@ -85,7 +85,7 @@ const CreateCourse = () => {
       courseThumbnail: courseThumbnail,
       studentsEnrolled: [],
       level,
-      instructorName: "Instructor Default"
+      instructorName: "Instructor Default",
     });
 
     for (const videoData of videos) {
@@ -137,150 +137,158 @@ const CreateCourse = () => {
 
   return (
     <div className="createcoursepageContainer">
-
       <NavBar isBack={true} />
-    <div className="create-course-page">
-      <h2>Create Course</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <label>Price:</label>
-        <input
-          type="text"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        />
-        <label>Description:</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-        <div className="level">
-        <label>Level:</label>
-        <select value={level} onChange={(e) => setLevel(e.target.value)}>
-          <option value="beginner">Beginner</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="advanced">Advanced</option>
-        </select>
-        </div>
-        <label htmlFor="courseImage">Course Thumbnail:</label>
-        <input
-          type="file"
-          id="courseThumbnail"
-          accept="image/*"
-          onChange={handleCourseThumbnailSelect}
-          required
-          className="inputfile"
-        />
-        <label htmlFor="courseThumbnail" className="courseThumbnailLabel">
-          <FaUpload />
-          <p>Choose File</p>
-        </label>
-
-        {/* Preview of the selected course thumbnail */}
-        {courseThumbnailPreview && (
-          <div className="thumbnail-preview">
-            <img src={courseThumbnailPreview} alt="Course Thumbnail Preview" />
+      <div className="create-course-page">
+        <h2>Create Course</h2>
+        <form onSubmit={handleSubmit}>
+          <label>Title:</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <label>Price:</label>
+          <input
+            type="text"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+          />
+          <label>Description:</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+          <div className="level">
+            <label>Level:</label>
+            <select value={level} onChange={(e) => setLevel(e.target.value)}>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
           </div>
-        )}
-        <label>Videos:</label>
-        <button onClick={handleModalOpen}>Add Video</button>
-        {/* Display selected videos with titles */}
-        {videos.map((videoData, index) => (
-          <div key={index} className="video-preview">
-            <div className="video-preview__info">
-              <p>Title: {videoData.title}</p>
-              <p>Description: {videoData.description}</p>
+          <label htmlFor="courseImage">Course Thumbnail:</label>
+          <input
+            type="file"
+            id="courseThumbnail"
+            accept="image/*"
+            onChange={handleCourseThumbnailSelect}
+            required
+            className="inputfile"
+          />
+          <label htmlFor="courseThumbnail" className="courseThumbnailLabel">
+            <FaUpload />
+            <p>Choose File</p>
+          </label>
+
+          {/* Preview of the selected course thumbnail */}
+          {courseThumbnailPreview && (
+            <div className="thumbnail-preview">
+              <img
+                src={courseThumbnailPreview}
+                alt="Course Thumbnail Preview"
+              />
             </div>
-            <div className="video-preview__media">
-              <video src={URL.createObjectURL(videoData.video)} controls />
-              {videoData.thumbnail && (
+          )}
+          <label>Videos:</label>
+          <button onClick={handleModalOpen}>Add Video</button>
+          {/* Display selected videos with titles */}
+          {videos.map((videoData, index) => (
+            <div key={index} className="video-preview">
+              <div className="video-preview__info">
+                <p>Title: {videoData.title}</p>
+                <p>Description: {videoData.description}</p>
+              </div>
+              <div className="video-preview__media">
+                <video src={URL.createObjectURL(videoData.video)} controls />
+                {videoData.thumbnail && (
+                  <img
+                    src={URL.createObjectURL(videoData.thumbnail)}
+                    alt="Thumbnail"
+                  />
+                )}
+              </div>
+              <button onClick={() => handleRemoveVideo(index)}>
+                Remove Video
+              </button>
+            </div>
+          ))}
+          <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+            <h3>Add Video</h3>
+            <form>
+              <label>Title:</label>
+              <input
+                type="text"
+                value={videoTitle}
+                onChange={(e) => setVideoTitle(e.target.value)}
+                required
+              />
+              <label>Description:</label>
+              <textarea
+                value={videoDescription}
+                onChange={(e) => setVideoDescription(e.target.value)}
+                required
+              />
+              <label>Select Video:</label>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={handleVideoSelect}
+                required
+                id="selectVideo"
+              />
+              <label htmlFor="selectVideo">
+                <FaUpload />
+                <p>Choose Video</p>
+              </label>
+              {/* Display thumbnail */}
+              {thumbnail && (
                 <img
-                  src={URL.createObjectURL(videoData.thumbnail)}
+                  className="thumbnailPreview"
+                  src={URL.createObjectURL(thumbnail)}
                   alt="Thumbnail"
                 />
               )}
-            </div>
-            <button onClick={() => handleRemoveVideo(index)}>
-              Remove Video
-            </button>
-          </div>
-        ))}
-        <Modal isOpen={isModalOpen} onClose={handleModalClose}>
-          <h3>Add Video</h3>
-          <form>
-            <label>Title:</label>
-            <input
-              type="text"
-              value={videoTitle}
-              onChange={(e) => setVideoTitle(e.target.value)}
-              required
-            />
-            <label>Description:</label>
-            <textarea
-              value={videoDescription}
-              onChange={(e) => setVideoDescription(e.target.value)}
-              required
-            />
-            <label>Select Video:</label>
-            <input
-              type="file"
-              accept="video/*"
-              onChange={handleVideoSelect}
-              required
-              id="selectVideo"
-            />
-            <label htmlFor="selectVideo"><FaUpload/><p>Choose Video</p></label>
-            {/* Display thumbnail */}
-            {thumbnail && (
-              <img
-                className="thumbnailPreview"
-                src={URL.createObjectURL(thumbnail)}
-                alt="Thumbnail"
+              {/* Button to select thumbnail */}
+              <label>Select Thumbnail:</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleThumbnailSelect}
+                required
+                id="selectThumbnail"
+              />
+              <label htmlFor="selectThumbnail">
+                <FaUpload />
+                <p>Choose Thumbnail</p>
+              </label>
+              <button type="button" onClick={handleAddVideo}>
+                Add Video
+              </button>
+            </form>
+          </Modal>
+          <div className="buttonContainer">
+            {isUploading ? (
+              <p>
+                Uploading Course....
+                <br />
+                Please wait
+              </p>
+            ) : (
+              <button type="submit">Create Course</button>
+            )}
+            {isUploading && (
+              <progress
+                className="uploadProgress"
+                value={uploadProgress}
+                max="100"
               />
             )}
-            {/* Button to select thumbnail */}
-            <label>Select Thumbnail:</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleThumbnailSelect}
-              required
-              id="selectThumbnail"
-            />
-            <label htmlFor="selectThumbnail"><FaUpload/><p>Choose Thumbnail</p></label>
-            <button type="button" onClick={handleAddVideo}>
-              Add Video
-            </button>
-          </form>
-        </Modal>
-        <div className="buttonContainer">
-          {isUploading ? (
-            <p>
-              Uploading Course....
-              <br />
-              Please wait
-            </p>
-          ) : (
-            <button type="submit">Create Course</button>
-          )}
-          {isUploading && (
-            <progress
-              className="uploadProgress"
-              value={uploadProgress}
-              max="100"
-            />
-          )}
-        </div>
-      </form>
-    </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
