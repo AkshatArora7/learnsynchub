@@ -11,6 +11,10 @@ nav{
     border-radius: 40px;
     padding: 0px 20px;
 
+    .backButton{
+        cursor: pointer;
+    }
+
     .actionButtons{
         display: flex;
         align-items: center;

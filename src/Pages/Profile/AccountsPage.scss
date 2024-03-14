@@ -1,7 +1,12 @@
+.profilePageContainer{
+  display: flex;
+  flex-direction: column;
+}
+
 .profilePage {
-  max-width: 600px;
+  width: 600px;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 5rem;
 
   .switchContainer {
     display: flex;

@@ -3,6 +3,7 @@ import { firestore, storage } from "../../Firebase"; // Assuming you have Fireba
 import "./CreateCourse.scss"; // Your CSS file for styling
 import Modal from "../../Components/Widgets/Modal/Modal";
 import { FaUpload } from "react-icons/fa";
+import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const CreateCourse = () => {
   const [title, setTitle] = useState("");
@@ -135,6 +136,9 @@ const CreateCourse = () => {
   };
 
   return (
+    <div className="createcoursepageContainer">
+
+      <NavBar isBack={true} />
     <div className="create-course-page">
       <h2>Create Course</h2>
       <form onSubmit={handleSubmit}>
@@ -276,6 +280,7 @@ const CreateCourse = () => {
           )}
         </div>
       </form>
+    </div>
     </div>
   );
 };

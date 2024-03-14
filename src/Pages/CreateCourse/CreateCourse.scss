@@ -1,7 +1,13 @@
+.createcoursepageContainer{
+  display: flex;
+  flex-direction: column;
+}
+
 .create-course-page {
   width: 100%;
   margin: 0 auto;
   padding: 20px;
+  padding-top: 5rem;
 
   h2 {
     font-size: 24px;

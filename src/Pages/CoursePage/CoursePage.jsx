@@ -7,6 +7,7 @@ import Modal from "../../Components/Widgets/Modal/Modal";
 import { FaPlayCircle } from "react-icons/fa";
 import { useAuth } from "../../auth";
 import { FaStar } from "react-icons/fa";
+import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const CoursePage = () => {
   const { id } = useParams();
@@ -142,6 +143,7 @@ const CoursePage = () => {
 
   return (
     <div className="course-page">
+      <NavBar isBack={true} />
       <img
         className="course-thumbnail"
         src={courseData.courseThumbnail}

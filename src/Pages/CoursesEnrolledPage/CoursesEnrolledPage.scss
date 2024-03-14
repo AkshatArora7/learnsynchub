@@ -13,11 +13,15 @@
     }
   }
 
+  .courseEnrolledContainer{
+    display: flex;
+    flex-direction: column;
+  }
+
 
   .courses-enrolled-page {
-    padding: 20px;
-
-
+    padding: 2.4rem;
+    padding-top: 5rem;
 
     ul{
         list-style: none;

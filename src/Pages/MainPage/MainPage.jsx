@@ -16,18 +16,6 @@ const MainPage = () => {
   const [topInstructors, setTopInstructors] = useState([])
 
 
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-  const handleLogout = async () => {
-    try {
-      await logout();
-      console.log("User logged out successfully!");
-      navigate("/login");
-    } catch (error) {
-      console.error("Error logging out:", error.message);
-    }
-  };
-
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -61,7 +49,7 @@ const MainPage = () => {
 
   return (
     <div className="mainPage">
-      <NavBar handleLogout={handleLogout} />
+      <NavBar isBack={false} />
       <div className="mainPageWrapper">
         <div className="courses">
           <h3>Available Courses</h3>

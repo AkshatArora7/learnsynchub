@@ -4,6 +4,7 @@ import { firestore } from "../../Firebase"; // Assuming you have Firestore initi
 import "./CoursesEnrolledPage.scss";
 import loadingGif from "../../Components/Assets/loading.gif";
 import { useNavigate } from "react-router-dom";
+import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const CoursesEnrolledPage = () => {
   const { getUserId } = useAuth();
@@ -53,6 +54,8 @@ const CoursesEnrolledPage = () => {
   }
 
   return (
+    <div className="courseEnrolledContainer">
+      <NavBar isBack={true}/>
     <div className="courses-enrolled-page">
       <h2>Courses Enrolled</h2>
       <ul>
@@ -69,6 +72,7 @@ const CoursesEnrolledPage = () => {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   );
 };

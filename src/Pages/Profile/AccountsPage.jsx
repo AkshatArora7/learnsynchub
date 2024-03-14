@@ -4,6 +4,7 @@ import { FaEdit, FaSave } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { firestore, storage } from "../../Firebase";
 import { useAuth } from "../../auth";
+import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const AccountsPage = () => {
   const { id } = useParams();
@@ -133,6 +134,8 @@ const AccountsPage = () => {
   }
 
   return (
+    <div className="profilePageContainer">
+      <NavBar isBack={true} />
     <div className="profilePage">
       <h2>User Profile</h2>
       <div className="profileInfo">
@@ -233,6 +236,7 @@ const AccountsPage = () => {
           Save Profile
         </button>
       </div>
+    </div>
     </div>
   );
 };
