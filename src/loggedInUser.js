@@ -36,8 +36,6 @@ const useLoggedInUser = () => {
 
     return () => unsubscribe();
   }, []);
-  console.log("Logged in user");
-  console.log(loggedInUser);
 
   return loggedInUser;
 };

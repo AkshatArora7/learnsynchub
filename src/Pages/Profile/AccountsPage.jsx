@@ -54,6 +54,12 @@ const AccountsPage = () => {
   };
 
   const handleTeacherToggle = () => {
+
+    if (!nameInput || !emailInput || !addressInput || !loggedInUser.photoURL) {
+      alert("Please fill in all profile information before enabling Teacher Mode.");
+      return;
+    }
+    
     firestore
       .collection("users")
       .doc(id)

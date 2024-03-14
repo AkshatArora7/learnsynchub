@@ -3,8 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { firestore } from "../../Firebase";
 import loading from "../../Components/Assets/loading.gif";
 import "./CoursePage.scss";
+import Modal from "../../Components/Widgets/Modal/Modal";
 import { FaPlayCircle } from "react-icons/fa";
 import { useAuth } from "../../auth";
+import { FaStar } from "react-icons/fa";
 
 const CoursePage = () => {
   const { id } = useParams();
@@ -13,9 +15,36 @@ const CoursePage = () => {
   const navigate = useNavigate();
   const { loggedInUser } = useAuth();
   const [instructor, setInstructor] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviewContent, setReviewContent] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
+
+  const [reviews, setReviews] = useState([]);
 
   const isEnrolled = () => {
     return courseData.studentsEnrolled.includes(loggedInUser.uid);
+  };
+
+  const handleReviewSubmit = async () => {
+    try {
+      // Add review to Firestore
+      await firestore.collection("reviews").add({
+        courseId: id,
+        userId: loggedInUser.uid,
+        review: reviewContent,
+        rating: reviewRating,
+        createdAt: new Date(),
+      });
+      setIsModalOpen(false);
+      setReviewContent("");
+      setReviewRating(0);
+    } catch (error) {
+      console.error("Error adding review:", error);
+    }
+  };
+
+  const handleReviewClick = () => {
+    setIsModalOpen(true);
   };
 
   useEffect(() => {
@@ -50,8 +79,28 @@ const CoursePage = () => {
                 id: doc.id,
                 ...doc.data(),
               }));
-              console.log(videosData);
               setVideos(videosData);
+
+              const reviewsRef = firestore.collection("reviews").where("courseId", "==", id);
+        const reviewsSnapshot = await reviewsRef.get();
+        const reviewsData = await Promise.all(reviewsSnapshot.docs.map(async (doc) => {
+          const reviewData = doc.data();
+          const userRef = firestore.collection("users").doc(reviewData.userId);
+          const userDoc = await userRef.get();
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+            return {
+              id: doc.id,
+              userName: userData.name,
+              userPhotoURL: userData.photoURL,
+              ...reviewData,
+            };
+          } else {
+            console.log("User not found for review:", doc.id);
+            return null;
+          }
+        }));
+        setReviews(reviewsData.filter(review => review !== null));
             } catch (error) {
               console.error("Error fetching videos:", error);
             }
@@ -77,6 +126,10 @@ const CoursePage = () => {
 
   const handleChat = () => {
     navigate(`/chat`, { state: { instructor: instructor } });
+  };
+
+  const handleStarClick = (rating) => {
+    setReviewRating(rating);
   };
 
   if (!courseData) {
@@ -118,10 +171,35 @@ const CoursePage = () => {
           <p className="course-videos">Number of Videos: {videos.length}</p>
 
           <ul className="reviews">
-            <h2>Reviews</h2>
-            {courseData.reviews.map((review, index) => (
+            <div className="reviewsHeader">
+              <h2>Reviews</h2>
+              <div className="addReviewButton" onClick={handleReviewClick}>
+                Add Review
+              </div>
+            </div>
+            {reviews.map((review, index) => (
               <li key={index} className="review-item">
-                <p>{review}</p>
+                <div className="review-header">
+                  <img
+                    src={review.userPhotoURL}
+                    alt="User Profile"
+                    className="user-avatar"
+                  />
+                  <div className="user-info">
+                    <h4>{review.userName}</h4>
+                    <p>{review.createdAt.toDate().toLocaleDateString()}</p>
+                  </div>
+                  <div className="user-rating">
+                    {[...Array(review.rating)].map((_, index) => (
+                      <FaStar
+                        key={index}
+                        className="star filled"
+                        color="gold"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="review-content">{review.review}</p>
               </li>
             ))}
           </ul>
@@ -154,6 +232,34 @@ const CoursePage = () => {
           )}
         </div>
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="review-form">
+          <h2>Add Review</h2>
+          <textarea
+            value={reviewContent}
+            onChange={(e) => setReviewContent(e.target.value)}
+            placeholder="Enter your review..."
+            className="review-textarea"
+          />
+          <div className="rating-stars">
+            {[...Array(5)].map((_, index) => {
+              const ratingValue = index + 1;
+              return (
+                <FaStar
+                  key={index}
+                  className={
+                    ratingValue <= reviewRating ? "star filled" : "star"
+                  }
+                  onClick={() => handleStarClick(ratingValue)}
+                />
+              );
+            })}
+          </div>
+          <button onClick={handleReviewSubmit} className="submit-review-button">
+            Submit Review
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

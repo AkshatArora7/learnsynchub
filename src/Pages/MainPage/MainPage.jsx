@@ -12,8 +12,9 @@ import TopInstructors from "../../Components/Widgets/TopInstructors/TopInstructo
 const MainPage = () => {
   const [courses, setCourses] = useState([])
 
-  const topInstructors = instructors.sort((a, b) => b.getAverageRating() - a.getAverageRating()).slice(0, 7);
-  console.log(topInstructors);
+  // const topInstructors = instructors.sort((a, b) => b.getAverageRating() - a.getAverageRating()).slice(0, 7);
+  const [topInstructors, setTopInstructors] = useState([])
+
 
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -31,6 +32,16 @@ const MainPage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        const instructorsSnapshot = await firestore
+        .collection("users")
+        .where("isTeacher", "==", true)
+        .get();
+      const instructorsData = instructorsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setTopInstructors(instructorsData);
+
         const coursesSnapshot = await firestore.collection("courses").limit(8).get();
         const coursesData = coursesSnapshot.docs.map((doc) => ({
           id: doc.id,

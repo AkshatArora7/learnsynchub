@@ -9,6 +9,28 @@
   // max-width: 800px;
   margin: 0 auto;
 
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10rem;
+    margin: 2rem 0rem;
+  }
+
+  .instructorImg {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+
+    img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
   .profile-details {
     margin-bottom: 20px;
 
@@ -32,10 +54,10 @@
     }
 
     .courses-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 20px;
-      width: 50%;
+      width: 100%;
     }
 
     .course-tile {
@@ -46,16 +68,25 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 20rem;
 
       img {
-        width: 100%;
+        width: 18rem;
+        height: 200px;
         border-radius: 5px;
+        object-fit: cover;
+        object-position: center;
       }
 
       h4 {
         font-size: 18px;
         margin-top: 10px;
         margin-bottom: 5px;
+      }
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
       }
     }
   }

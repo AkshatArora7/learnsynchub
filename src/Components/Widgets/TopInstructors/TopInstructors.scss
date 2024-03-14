@@ -3,6 +3,13 @@
     height: 120px;
     overflow: hidden;
     border-radius: 50%;
+
+    img{
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        object-position: center;
+    }
 }
 
 .topInstrutors:hover{
