@@ -12,6 +12,7 @@ const CoursePage = () => {
   const [videos, setVideos] = useState([]);
   const navigate = useNavigate();
   const { loggedInUser } = useAuth();
+  const [instructor, setInstructor] = useState(null);
 
   const isEnrolled = () => {
     return courseData.studentsEnrolled.includes(loggedInUser.uid);
@@ -24,8 +25,23 @@ const CoursePage = () => {
         const courseSnapshot = await courseRef.get();
         if (courseSnapshot.exists) {
           setCourseData(courseSnapshot.data());
-          if (courseSnapshot.data().studentsEnrolled.includes(loggedInUser.uid)) {
+          if (
+            courseSnapshot.data().studentsEnrolled.includes(loggedInUser.uid)
+          ) {
             try {
+              const instructorRef = firestore
+                .collection("users")
+                .doc(courseSnapshot.data().createdBy);
+              const instructorDoc = await instructorRef.get();
+              if (instructorDoc.exists) {
+                const instructorData = {
+                  id: instructorDoc.id,
+                  ...instructorDoc.data(),
+                };
+                setInstructor(instructorData);
+              } else {
+                console.log("Instructor not found");
+              }
               const videosRef = firestore
                 .collection("videos")
                 .where("courseId", "==", id);
@@ -34,7 +50,7 @@ const CoursePage = () => {
                 id: doc.id,
                 ...doc.data(),
               }));
-              console.log(videosData)
+              console.log(videosData);
               setVideos(videosData);
             } catch (error) {
               console.error("Error fetching videos:", error);
@@ -43,8 +59,6 @@ const CoursePage = () => {
         } else {
           console.log("Course not found");
         }
-
-
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
@@ -61,10 +75,9 @@ const CoursePage = () => {
     navigate(`/course/${id}/video/${videoId}`, { state: { videoSnapshot } });
   };
 
-
-  const handleChat = ()=>{
-    navigate(`/chat`)
-  }
+  const handleChat = () => {
+    navigate(`/chat`, { state: { instructor: instructor } });
+  };
 
   if (!courseData) {
     return (
@@ -86,7 +99,9 @@ const CoursePage = () => {
           <div className="title-container">
             <h1 className="course-title">{courseData.title}</h1>
             {isEnrolled() ? (
-              <div className="message-button" onClick={handleChat}>Message Instructor</div>
+              <div className="message-button" onClick={handleChat}>
+                Message Instructor
+              </div>
             ) : (
               <div className="join-button" onClick={handleJoin}>
                 Join Now for ${courseData.price}
