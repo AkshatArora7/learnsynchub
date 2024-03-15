@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './RegisterForm.scss'
 import { FaUser, FaLock  } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import loadingGIF from "../../Components/Assets/loading.gif"
 import { useAuth } from '../../auth';
 
@@ -32,8 +32,10 @@ const RegisterForm = () => {
     setLoading(false);
   };
 
-  if (isAuthenticated) {
-    navigate('/');
+  const storedAuth = localStorage.getItem("isAuthenticated");
+
+  if (storedAuth === "true") {
+    return <Navigate to="/" />;
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./LoginForm.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
 import loadingGIF from "../../Components/Assets/loading.gif";
 import { useAuth } from "../../auth";
@@ -30,6 +30,12 @@ const LoginForm = () => {
 
     setLoading(false);
   };
+
+  const storedAuth = localStorage.getItem("isAuthenticated");
+
+  if (storedAuth === "true") {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="login">
