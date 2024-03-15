@@ -1,3 +1,4 @@
+@import '../../theme';
 .video-page {
   video {
     width: 100%;
@@ -14,7 +15,7 @@
       }
 
       .add-faq-button {
-        background-color: #007bff;
+        background-color: $primary-color;
         color: white;
         padding: 3px 20px;
         border-radius: 20px;

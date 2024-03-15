@@ -1,3 +1,5 @@
+@import '../../theme';
+
 .createcoursepageContainer{
   display: flex;
   flex-direction: column;
@@ -52,7 +54,7 @@
       font-size: 1em;
       font-weight: 400;
       color: white;
-      background-color: #007bff;
+      background-color: $primary-color;
       display: flex;
       flex-direction: row;
       width: fit-content;
@@ -86,7 +88,7 @@
 
     button {
       padding: 10px 20px;
-      background-color: #007bff;
+      background-color: $primary-color;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -94,7 +96,7 @@
       transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: #0056b3;
+        background-color: $hover-color;
       }
     }
   }

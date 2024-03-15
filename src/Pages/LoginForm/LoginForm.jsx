@@ -7,7 +7,7 @@ import { useAuth } from "../../auth";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login, isAuthenticated, handleForgotPassword } = useAuth();
+  const { login, handleForgotPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading state to true when login starts
+    setLoading(true);
 
     try {
       await login(email, password, rememberMe);
@@ -28,12 +28,8 @@ const LoginForm = () => {
       
     }
 
-    setLoading(false); // Set loading state to false when login completes
+    setLoading(false);
   };
-
-   if (isAuthenticated) {
-    navigate('/');
-  }
 
   return (
     <div className="login">

@@ -32,16 +32,15 @@ export const AuthProvider = ({ children }) => {
       
       if (rememberMe) {
         localStorage.setItem("isAuthenticated", "true");
-        // You can store additional user data here if needed
       }
       
       setIsAuthenticated(true);
       
-      // Get the current user
+
       const currentUser = userCredential.user;
 
   
-      // Update Firestore document with last seen timestamp
+
       await firestore.collection("users").doc(currentUser.uid).update({
         lastSeen: new Date.now().toString(),
       });

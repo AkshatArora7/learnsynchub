@@ -1,3 +1,7 @@
+
+@import '../../../theme';
+
+
 .card {
   display: flex;
   flex-direction: column;
@@ -78,7 +82,7 @@
   }
 
   &__alreadyenrolled {
-    background-color: green;
+    background-color: $success-color;
     padding: 5px 20px;
     border-radius: 25px;
     color: white;
@@ -91,7 +95,7 @@
   }
 
   &__joinBtn {
-    background-color: #007bff;
+    background-color: $primary-color;
     color: #fff;
     padding: 5px 0px;
     border-radius: 25px;
@@ -101,7 +105,7 @@
     width: 80%;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: $primary-color;
     }
   }
 }

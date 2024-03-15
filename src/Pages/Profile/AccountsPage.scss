@@ -1,3 +1,5 @@
+@import '../../theme';
+
 .profilePageContainer{
   display: flex;
   flex-direction: column;
@@ -39,7 +41,7 @@
       }
 
       &:checked {
-        background-color: green;
+        background-color: $success-color;
       }
 
       &:checked:before {
@@ -55,14 +57,14 @@
     margin-bottom: 0;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: $primary-color;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: $hover-color;
     }
   }
 }
@@ -121,7 +123,7 @@
 }
 
 .inputContainer button {
-  color: #007bff;
+  color: $primary-color;
   border: none;
   padding: 5px 10px;
   cursor: pointer;

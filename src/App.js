@@ -13,26 +13,24 @@ import ChatPage from "./Pages/ChatPage/ChatPage";
 import VideoPage from "./Pages/VideoPage/VideoPage";
 import CoursesEnrolledPage from "./Pages/CoursesEnrolledPage/CoursesEnrolledPage";
 import CheckoutPage from "./Pages/CheckoutPage/CheckoutPage";
+import { useAuth } from "./auth";
 
 function App() {
+  const { isAuthenticated } = useAuth();
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
-          <Route exact path="/" element={<PrivateRoute />}>
-            <Route exact path="/" element={<MainPage />} />
-            <Route
-              exact
-              path="/instructor/:id"
-              element={<InstructorProfile />}
-            />
-            <Route exact path="/profile/:id" element={<AccountsPage />} />
-            <Route exact path="/create" element={<CreateCourse />} />
-            <Route exact path="/chat" element={<ChatPage />} />
-            <Route exact path="/checkout" element={<CheckoutPage />} />
-            <Route exact path="/coursesEnrolled" element={<CoursesEnrolledPage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/instructor/:id" element={<InstructorProfile />} />
+            <Route path="/profile/:id" element={<AccountsPage />} />
+            <Route path="/create" element={<CreateCourse />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/coursesEnrolled" element={<CoursesEnrolledPage />} />
             <Route path="/course/:id/*" element={<CoursePage />} />
             <Route
               path="/course/:courseId/video/:videoId"
