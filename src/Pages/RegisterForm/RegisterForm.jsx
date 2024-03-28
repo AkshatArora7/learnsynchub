@@ -9,7 +9,7 @@ import { useAuth } from '../../auth';
 
 const RegisterForm = () => {
   const [email, setEmail] = useState('');
-  const { register, isAuthenticated } = useAuth();
+  const { register } = useAuth();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const RegisterForm = () => {
 
     try {
       await register(email, password, confirmPassword); 
-      navigate('/'); 
+      navigate('/');
     } catch (error) {
       console.error("Error registering user:", error.message);
     }

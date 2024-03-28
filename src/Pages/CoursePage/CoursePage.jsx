@@ -175,9 +175,9 @@ const CoursePage = () => {
           <ul className="reviews">
             <div className="reviewsHeader">
               <h2>Reviews</h2>
-              <div className="addReviewButton" onClick={handleReviewClick}>
+              { isEnrolled() ? <div className="addReviewButton" onClick={handleReviewClick}>
                 Add Review
-              </div>
+              </div> : <></>}
             </div>
             {reviews.map((review, index) => (
               <li key={index} className="review-item">

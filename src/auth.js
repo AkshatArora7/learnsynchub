@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     }
   }, []);
-  
+
   const getUserId = () => {
     if (isAuthenticated) {
       const user = auth.currentUser;
@@ -23,28 +23,26 @@ export const AuthProvider = ({ children }) => {
       return null;
     }
   };
-  
-  
+
   const login = async (email, password, rememberMe) => {
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(email, password);
-      localStorage.setItem('uid', userCredential.user.uid)
-      
+      const userCredential = await auth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+      localStorage.setItem("uid", userCredential.user.uid);
+
       if (rememberMe) {
         localStorage.setItem("isAuthenticated", "true");
       }
-      
+
       setIsAuthenticated(true);
-      
 
       const currentUser = userCredential.user;
-
-  
 
       await firestore.collection("users").doc(currentUser.uid).update({
         lastSeen: new Date.now().toString(),
       });
-  
     } catch (error) {
       if (
         error.code === "auth/wrong-password" ||
@@ -56,7 +54,6 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
-  
 
   const logout = async () => {
     try {
@@ -79,8 +76,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
-
   const register = async (email, password, confirmPassword) => {
     try {
       if (password !== confirmPassword) {
@@ -92,15 +87,16 @@ export const AuthProvider = ({ children }) => {
         password
       );
 
-      localStorage.setItem('uid', user.uid)
+      localStorage.setItem("uid", user.uid);
 
+      localStorage.setItem("isAuthenticated", "true");
 
       await firestore.collection("users").doc(user.uid).set({
         email: user.email,
         password: password,
         joinedAt: Date.now().toString(),
         lastSeen: Date.now().toString(),
-        isTeacher: false
+        isTeacher: false,
       });
 
       setIsAuthenticated(true);
@@ -112,7 +108,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, register, getUserId, handleForgotPassword, loggedInUser }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        login,
+        logout,
+        register,
+        getUserId,
+        handleForgotPassword,
+        loggedInUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./MainPage.scss";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../auth";
 import CourseCard from "../../Components/Widgets/CourseCard/CourseCard";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
 import Footer from "../../Components/Widgets/Footer/Footer";
-import instructors from "../../Data/instructors";
 import { firestore } from "../../Firebase";
 import TopInstructors from "../../Components/Widgets/TopInstructors/TopInstructors";
 
 const MainPage = () => {
   const [courses, setCourses] = useState([])
 
-  // const topInstructors = instructors.sort((a, b) => b.getAverageRating() - a.getAverageRating()).slice(0, 7);
   const [topInstructors, setTopInstructors] = useState([])
 
 
