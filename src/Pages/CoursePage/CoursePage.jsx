@@ -28,14 +28,26 @@ const CoursePage = () => {
 
   const handleReviewSubmit = async () => {
     try {
-      // Add review to Firestore
-      await firestore.collection("reviews").add({
+      const reviewRef = await firestore.collection("reviews").add({
         courseId: id,
         userId: loggedInUser.uid,
         review: reviewContent,
         rating: reviewRating,
         createdAt: new Date(),
       });
+  
+      setReviews((prevReviews) => [
+        ...prevReviews,
+        {
+          id: reviewRef.id,
+          userName: loggedInUser.name,
+          userPhotoURL: loggedInUser.photoURL,
+          review: reviewContent,
+          rating: reviewRating,
+          createdAt: new Date(),
+        },
+      ]);
+  
       setIsModalOpen(false);
       setReviewContent("");
       setReviewRating(0);
@@ -43,6 +55,7 @@ const CoursePage = () => {
       console.error("Error adding review:", error);
     }
   };
+  
 
   const handleReviewClick = () => {
     setIsModalOpen(true);

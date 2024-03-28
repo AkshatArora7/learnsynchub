@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("isAuthenticated", "true");
 
       await firestore.collection("users").doc(user.uid).set({
+        photoURL: "https://firebasestorage.googleapis.com/v0/b/learnsynchub-fc3b1.appspot.com/o/user_images%2Fdefault%2F1%20avatar1.jpeg?alt=media&token=2721236f-5350-4fa5-8caa-3bee61fcfbd5",
         email: user.email,
         password: password,
         joinedAt: Date.now().toString(),
