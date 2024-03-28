@@ -6,15 +6,17 @@ import FaqItem from "../../Components/Widgets/FAQItem/FAQItem";
 import Modal from "../../Components/Widgets/Modal/Modal";
 import FAQForm from "../../Components/Widgets/FAQForm/FAQForm";
 import loading from "../../Components/Assets/loading.gif";
+import Loading from "../../Components/Widgets/Loading/Loading";
 
 const VideoPage = () => {
   const { courseId, videoId } = useParams();
-  console.log(courseId)
+  console.log(courseId);
   const location = useLocation();
   const videoSnapshot = location.state.videoSnapshot;
   const [videoData, setVideoData] = useState(videoSnapshot);
   const [faqData, setFaqData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchVideoData = async () => {
@@ -24,6 +26,7 @@ const VideoPage = () => {
           const videoDoc = await videoRef.get();
           if (videoDoc.exists) {
             setVideoData(videoDoc.data());
+            setLoading(false);
           } else {
             console.log("Video not found");
           }
@@ -59,45 +62,43 @@ const VideoPage = () => {
     setIsModalOpen(false); // Close the modal after adding FAQ
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div>
-      {videoData ? (
-        <div className="video-page">
-          <video src={videoSnapshot.url} controls autoPlay />
-          <div className="video-details">
-            <h2>{videoData.title}</h2>
-            <p>Description: {videoData.description}</p>
+      <div className="video-page">
+        <video src={videoSnapshot.url} controls autoPlay />
+        <div className="video-details">
+          <h2>{videoData.title}</h2>
+          <p>Description: {videoData.description}</p>
 
-            <div className="faq-container">
-              <div className="faq-header">
-                <h2>FAQs</h2>
-                <div
-                  className="add-faq-button"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Add FAQ
-                </div>
+          <div className="faq-container">
+            <div className="faq-header">
+              <h2>FAQs</h2>
+              <div
+                className="add-faq-button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add FAQ
               </div>
-              {faqData.map((faq, index) => (
-                <FaqItem key={index} faq={faq} />
-              ))}
             </div>
+            {faqData.map((faq, index) => (
+              <FaqItem key={index} faq={faq} />
+            ))}
           </div>
-          {isModalOpen && (
-            <Modal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
-              <FAQForm
-                videoId={videoId}
-                onSubmit={handleAddFaq}
-                onCancel={() => setIsModalOpen(false)}
-              />
-            </Modal>
-          )}
         </div>
-      ) : (
-        <div>
-          <img src={loading} alt="loaing" />
-        </div>
-      )}
+        {isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
+            <FAQForm
+              videoId={videoId}
+              onSubmit={handleAddFaq}
+              onCancel={() => setIsModalOpen(false)}
+            />
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };

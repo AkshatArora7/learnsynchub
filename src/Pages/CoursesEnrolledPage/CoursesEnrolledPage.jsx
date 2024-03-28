@@ -5,6 +5,7 @@ import "./CoursesEnrolledPage.scss";
 import loadingGif from "../../Components/Assets/loading.gif";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
+import Loading from "../../Components/Widgets/Loading/Loading";
 
 const CoursesEnrolledPage = () => {
   const { getUserId } = useAuth();
@@ -42,11 +43,7 @@ const CoursesEnrolledPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="loading">
-        <img src={loadingGif} alt="" />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {
@@ -55,24 +52,24 @@ const CoursesEnrolledPage = () => {
 
   return (
     <div className="courseEnrolledContainer">
-      <NavBar isBack={true}/>
-    <div className="courses-enrolled-page">
-      <h2>Courses Enrolled</h2>
-      <ul>
-        {enrolledCourses.map((course) => (
-          <li key={course.id} className="course-card">
-            <div className="course-details">
-            <h3>{course.title}</h3>
-            <p>{course.description}</p>
-            </div>
+      <NavBar isBack={true} />
+      <div className="courses-enrolled-page">
+        <h2>Courses Enrolled</h2>
+        <ul>
+          {enrolledCourses.map((course) => (
+            <li key={course.id} className="course-card">
+              <div className="course-details">
+                <h3>{course.title}</h3>
+                <p>{course.description}</p>
+              </div>
 
-            <button onClick={() => handleCourseClick(course.id)}>
-              Go to Course
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+              <button onClick={() => handleCourseClick(course.id)}>
+                Go to Course
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

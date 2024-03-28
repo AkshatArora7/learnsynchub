@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { firestore } from "../../../Firebase";
 import "./ChatComponent.scss";
 import { useAuth } from "../../../auth";
+import Loading from "../Loading/Loading";
 
 const ChatComponent = ({ otherUser }) => {
   const [messages, setMessages] = useState([]);
@@ -9,7 +10,7 @@ const ChatComponent = ({ otherUser }) => {
   const { getUserId } = useAuth();
   const currentUser = getUserId();
   const messageContainerRef = useRef(null);
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (otherUser != null) {
@@ -21,13 +22,13 @@ const ChatComponent = ({ otherUser }) => {
         .onSnapshot((snapshot) => {
           const newMessages = snapshot.docs.map((doc) => doc.data());
           setMessages(newMessages);
+          setLoading(false);
           scrollToBottom();
         });
 
       return () => unsubscribe();
     }
   }, [currentUser, otherUser]);
-
 
   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
@@ -58,10 +59,14 @@ const ChatComponent = ({ otherUser }) => {
     );
   }
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <img src="https://avatar.iran.liara.run/public/8" alt="" />
+        <img src={otherUser.photoURL} alt="" />
         <h2>{otherUser.name}</h2>
       </div>
       <div className="message-container" ref={messageContainerRef}>

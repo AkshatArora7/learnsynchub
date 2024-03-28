@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { firestore } from "../../Firebase";
-import loading from "../../Components/Assets/loading.gif";
 import "./CoursePage.scss";
 import Modal from "../../Components/Widgets/Modal/Modal";
 import { FaPlayCircle } from "react-icons/fa";
 import { useAuth } from "../../auth";
 import { FaStar } from "react-icons/fa";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
+import Loading from "../../Components/Widgets/Loading/Loading";
 
 const CoursePage = () => {
   const { id } = useParams();
@@ -19,6 +19,7 @@ const CoursePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const [reviews, setReviews] = useState([]);
 
@@ -35,7 +36,7 @@ const CoursePage = () => {
         rating: reviewRating,
         createdAt: new Date(),
       });
-  
+
       setReviews((prevReviews) => [
         ...prevReviews,
         {
@@ -47,7 +48,7 @@ const CoursePage = () => {
           createdAt: new Date(),
         },
       ]);
-  
+
       setIsModalOpen(false);
       setReviewContent("");
       setReviewRating(0);
@@ -55,7 +56,6 @@ const CoursePage = () => {
       console.error("Error adding review:", error);
     }
   };
-  
 
   const handleReviewClick = () => {
     setIsModalOpen(true);
@@ -95,26 +95,32 @@ const CoursePage = () => {
               }));
               setVideos(videosData);
 
-              const reviewsRef = firestore.collection("reviews").where("courseId", "==", id);
-        const reviewsSnapshot = await reviewsRef.get();
-        const reviewsData = await Promise.all(reviewsSnapshot.docs.map(async (doc) => {
-          const reviewData = doc.data();
-          const userRef = firestore.collection("users").doc(reviewData.userId);
-          const userDoc = await userRef.get();
-          if (userDoc.exists) {
-            const userData = userDoc.data();
-            return {
-              id: doc.id,
-              userName: userData.name,
-              userPhotoURL: userData.photoURL,
-              ...reviewData,
-            };
-          } else {
-            console.log("User not found for review:", doc.id);
-            return null;
-          }
-        }));
-        setReviews(reviewsData.filter(review => review !== null));
+              const reviewsRef = firestore
+                .collection("reviews")
+                .where("courseId", "==", id);
+              const reviewsSnapshot = await reviewsRef.get();
+              const reviewsData = await Promise.all(
+                reviewsSnapshot.docs.map(async (doc) => {
+                  const reviewData = doc.data();
+                  const userRef = firestore
+                    .collection("users")
+                    .doc(reviewData.userId);
+                  const userDoc = await userRef.get();
+                  if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    return {
+                      id: doc.id,
+                      userName: userData.name,
+                      userPhotoURL: userData.photoURL,
+                      ...reviewData,
+                    };
+                  } else {
+                    console.log("User not found for review:", doc.id);
+                    return null;
+                  }
+                })
+              );
+              setReviews(reviewsData.filter((review) => review !== null));
             } catch (error) {
               console.error("Error fetching videos:", error);
             }
@@ -122,6 +128,7 @@ const CoursePage = () => {
         } else {
           console.log("Course not found");
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching course data:", error);
       }
@@ -146,12 +153,8 @@ const CoursePage = () => {
     setReviewRating(rating);
   };
 
-  if (!courseData) {
-    return (
-      <div className="loading">
-        <img src={loading} alt="" />
-      </div>
-    );
+  if (loading) {
+    return <Loading />;
   }
 
   return (
@@ -188,9 +191,13 @@ const CoursePage = () => {
           <ul className="reviews">
             <div className="reviewsHeader">
               <h2>Reviews</h2>
-              { isEnrolled() ? <div className="addReviewButton" onClick={handleReviewClick}>
-                Add Review
-              </div> : <></>}
+              {isEnrolled() ? (
+                <div className="addReviewButton" onClick={handleReviewClick}>
+                  Add Review
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             {reviews.map((review, index) => (
               <li key={index} className="review-item">

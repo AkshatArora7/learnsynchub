@@ -5,9 +5,11 @@ import NavBar from "../../Components/Widgets/NavBar/NavBar";
 import Footer from "../../Components/Widgets/Footer/Footer";
 import { firestore } from "../../Firebase";
 import TopInstructors from "../../Components/Widgets/TopInstructors/TopInstructors";
+import Loading from "../../Components/Widgets/Loading/Loading"
 
 const MainPage = () => {
   const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const [topInstructors, setTopInstructors] = useState([])
 
@@ -32,6 +34,7 @@ const MainPage = () => {
           ...doc.data(),
         }));
         setCourses(coursesData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching courses:", error.message);
       }
@@ -41,6 +44,9 @@ const MainPage = () => {
   }, []);
 
 
+  if(loading){
+    return <Loading/>
+  }
 
 
   return (
