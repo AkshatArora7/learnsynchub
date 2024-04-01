@@ -99,9 +99,11 @@ const CoursePage = () => {
                 .collection("reviews")
                 .where("courseId", "==", id);
               const reviewsSnapshot = await reviewsRef.get();
+              
               const reviewsData = await Promise.all(
                 reviewsSnapshot.docs.map(async (doc) => {
                   const reviewData = doc.data();
+                  const createdAt = reviewData.createdAt.toDate();
                   const userRef = firestore
                     .collection("users")
                     .doc(reviewData.userId);
@@ -112,7 +114,9 @@ const CoursePage = () => {
                       id: doc.id,
                       userName: userData.name,
                       userPhotoURL: userData.photoURL,
-                      ...reviewData,
+                      review: reviewData.review,
+                      rating: reviewData.rating,
+                      createdAt: createdAt,
                     };
                   } else {
                     console.log("User not found for review:", doc.id);
@@ -209,7 +213,7 @@ const CoursePage = () => {
                   />
                   <div className="user-info">
                     <h4>{review.userName}</h4>
-                    <p>{review.createdAt.toDate().toLocaleDateString()}</p>
+                    <p>{review.createdAt.toLocaleDateString()}</p>
                   </div>
                   <div className="user-rating">
                     {[...Array(review.rating)].map((_, index) => (

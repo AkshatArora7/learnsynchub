@@ -30,6 +30,10 @@ const NavBar = ({ isBack }) => {
     navigate(-1);
   };
 
+  const gotohome = ()=>{
+    navigate("/");
+  }
+
   return (
     <nav>
       {isBack == true ? (
@@ -39,7 +43,7 @@ const NavBar = ({ isBack }) => {
       ) : (
         <></>
       )}
-      <h1>LearnSync Hub</h1>
+      <h1 onClick={gotohome} className="brandName">LearnSync Hub</h1>
       <div className="actionButtons">
         <div onClick={handleLogout}>
           <IoLogOutOutline />

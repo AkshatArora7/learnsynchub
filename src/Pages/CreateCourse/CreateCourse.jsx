@@ -54,7 +54,6 @@ const CreateCourse = () => {
   };
 
   const handleAddVideo = () => {
-    // Add selected video with its title, description, and thumbnail to the videos array
     const videoData = {
       title: videoTitle,
       description: videoDescription,
@@ -74,60 +73,43 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsUploading(true);
-    const courseRef = await firestore.collection("courses").add({
-      title,
-      price,
-      description,
-      createdBy: uid,
-      creationTime: Date.now().toString(),
-      lastUpdated: Date.now().toString(),
-      reviews: [],
-      courseThumbnail: courseThumbnail,
-      studentsEnrolled: [],
-      level,
-      instructorName: "Instructor Default",
-    });
-
-    for (const videoData of videos) {
-      const { title, description, video, thumbnail } = videoData;
-      const videoRef = storage
-        .ref()
-        .child(`${courseRef.id}/${title}/${video.name}`);
-      const thumbnailRef = storage
-        .ref()
-        .child(`${courseRef.id}/${title}/${thumbnail.name}`);
-
-      try {
-        const videoSnapshot = await videoRef.put(video);
-        const thumbnailSnapshot = await thumbnailRef.put(thumbnail);
-
-        const videoUrl = await videoSnapshot.ref.getDownloadURL();
-        const thumbnailUrl = await thumbnailSnapshot.ref.getDownloadURL();
-
-        await firestore.collection("videos").add({
-          courseId: courseRef.id,
-          title,
-          description,
-          url: videoUrl,
-          thumbnailUrl,
-        });
-
-        const progress = Math.round(
-          (videoSnapshot.bytesTransferred / videoSnapshot.totalBytes) * 100
-        );
-        setUploadProgress(progress);
-      } catch (error) {
-        console.error("Error uploading video or thumbnail:", error);
-      }
+  
+    try {
+      // Upload course thumbnail to Firebase Storage
+      const thumbnailRef = storage.ref().child(`${uid}/${title}/${courseThumbnail.name}`);
+      const thumbnailSnapshot = await thumbnailRef.put(courseThumbnail);
+      const thumbnailUrl = await thumbnailSnapshot.ref.getDownloadURL();
+  
+      // Add course data to Firestore with the download URL of the thumbnail
+      const courseRef = await firestore.collection("courses").add({
+        title,
+        price,
+        description,
+        createdBy: uid,
+        creationTime: Date.now().toString(),
+        lastUpdated: Date.now().toString(),
+        reviews: [],
+        courseThumbnail: thumbnailUrl, // Store the download URL instead of the File object
+        studentsEnrolled: [],
+        level,
+        instructorName: "Instructor Default",
+      });
+  
+      // Handle uploading of videos here...
+  
+      // Reset form fields and state
+      setTitle("");
+      setPrice("");
+      setDescription("");
+      setVideos([]);
+      setIsUploading(false);
+      setUploadProgress(0);
+    } catch (error) {
+      console.error("Error creating course:", error);
+      setIsUploading(false);
     }
-
-    setTitle("");
-    setPrice("");
-    setDescription("");
-    setVideos([]);
-    setIsUploading(false);
-    setUploadProgress(0);
   };
+  
 
   const handleRemoveVideo = (index) => {
     const updatedVideos = [...videos];

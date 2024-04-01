@@ -5,6 +5,7 @@ import { FaCcApplePay, FaCcPaypal, FaGooglePay } from "react-icons/fa6";
 import { FaCreditCard } from "react-icons/fa";
 import { firestore } from "../../Firebase";
 import { useAuth } from "../../auth";
+import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const CheckoutPage = () => {
   const location = useLocation();
@@ -58,6 +59,7 @@ const CheckoutPage = () => {
 
   return (
     <div className="checkout">
+      <NavBar isBack={true} />
       <div className="checkout__wrapper">
         <h1>Checkout</h1>
         <div className="checkout__courseCard">

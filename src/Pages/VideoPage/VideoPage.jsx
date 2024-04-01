@@ -7,6 +7,7 @@ import Modal from "../../Components/Widgets/Modal/Modal";
 import FAQForm from "../../Components/Widgets/FAQForm/FAQForm";
 import loading from "../../Components/Assets/loading.gif";
 import Loading from "../../Components/Widgets/Loading/Loading";
+import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const VideoPage = () => {
   const { courseId, videoId } = useParams();
@@ -26,7 +27,6 @@ const VideoPage = () => {
           const videoDoc = await videoRef.get();
           if (videoDoc.exists) {
             setVideoData(videoDoc.data());
-            setLoading(false);
           } else {
             console.log("Video not found");
           }
@@ -46,13 +46,13 @@ const VideoPage = () => {
           const faqSnapshot = await faqQuery.get();
           const faqData = faqSnapshot.docs.map((doc) => doc.data());
           setFaqData(faqData);
+          setLoading(false);
         } catch (error) {
           console.error("Error fetching FAQ data:", error);
         }
       }
     };
 
-    // Call the fetch functions
     fetchVideoData();
     fetchFaqData();
   }, [videoSnapshot, videoId]);
@@ -68,6 +68,7 @@ const VideoPage = () => {
 
   return (
     <div>
+      <NavBar isBack={true}/>
       <div className="video-page">
         <video src={videoSnapshot.url} controls autoPlay />
         <div className="video-details">
