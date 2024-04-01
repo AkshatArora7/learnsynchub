@@ -4,6 +4,8 @@ import "./CreateCourse.scss"; // Your CSS file for styling
 import Modal from "../../Components/Widgets/Modal/Modal";
 import { FaUpload } from "react-icons/fa";
 import NavBar from "../../Components/Widgets/NavBar/NavBar";
+import useLoggedInUser from "../../loggedInUser";
+import { useAuth } from "../../auth";
 
 const CreateCourse = () => {
   const [title, setTitle] = useState("");
@@ -20,6 +22,7 @@ const CreateCourse = () => {
   const [courseThumbnailPreview, setCourseThumbnailPreview] = useState(null);
   const [courseThumbnail, setCourseThumbnail] = useState(null);
   const [level, setLevel] = useState("beginner");
+  const { loggedInUser } = useAuth();
 
   const uid = localStorage.getItem("uid");
 
@@ -73,31 +76,30 @@ const CreateCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsUploading(true);
-  
+
     try {
       // Upload course thumbnail to Firebase Storage
-      const thumbnailRef = storage.ref().child(`${uid}/${title}/${courseThumbnail.name}`);
+      const thumbnailRef = storage
+        .ref()
+        .child(`${uid}/${title}/${courseThumbnail.name}`);
       const thumbnailSnapshot = await thumbnailRef.put(courseThumbnail);
       const thumbnailUrl = await thumbnailSnapshot.ref.getDownloadURL();
-  
+
       // Add course data to Firestore with the download URL of the thumbnail
       const courseRef = await firestore.collection("courses").add({
         title,
         price,
         description,
         createdBy: uid,
-        creationTime: Date.now().toString(),
-        lastUpdated: Date.now().toString(),
+        creationTime: new Date.now(),
+        lastUpdated: new Date.now(),
         reviews: [],
         courseThumbnail: thumbnailUrl, // Store the download URL instead of the File object
         studentsEnrolled: [],
         level,
-        instructorName: "Instructor Default",
+        instructorName: loggedInUser.name,
       });
-  
-      // Handle uploading of videos here...
-  
-      // Reset form fields and state
+
       setTitle("");
       setPrice("");
       setDescription("");
@@ -109,7 +111,6 @@ const CreateCourse = () => {
       setIsUploading(false);
     }
   };
-  
 
   const handleRemoveVideo = (index) => {
     const updatedVideos = [...videos];
