@@ -122,7 +122,7 @@ const CreateCourse = () => {
       <NavBar isBack={true} />
       <div className="create-course-page">
         <h2>Create Course</h2>
-        <form onSubmit={handleSubmit}>
+        <form>
           <label>Title:</label>
           <input
             type="text"
@@ -259,7 +259,7 @@ const CreateCourse = () => {
                 Please wait
               </p>
             ) : (
-              <button type="submit">Create Course</button>
+              <button onClick={handleSubmit}>Create Course</button>
             )}
             {isUploading && (
               <progress
