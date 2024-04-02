@@ -28,7 +28,7 @@ const MainPage = () => {
       }));
       setTopInstructors(instructorsData);
 
-        const coursesSnapshot = await firestore.collection("courses").limit(8).get();
+        const coursesSnapshot = await firestore.collection("courses").get();
         const coursesData = coursesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),

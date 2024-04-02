@@ -85,7 +85,6 @@ const CreateCourse = () => {
       const thumbnailSnapshot = await thumbnailRef.put(courseThumbnail);
       const thumbnailUrl = await thumbnailSnapshot.ref.getDownloadURL();
 
-      // Add course data to Firestore with the download URL of the thumbnail
       const courseRef = await firestore.collection("courses").add({
         title,
         price,
@@ -94,7 +93,7 @@ const CreateCourse = () => {
         creationTime: new Date.now(),
         lastUpdated: new Date.now(),
         reviews: [],
-        courseThumbnail: thumbnailUrl, // Store the download URL instead of the File object
+        courseThumbnail: thumbnailUrl,
         studentsEnrolled: [],
         level,
         instructorName: loggedInUser.name,
