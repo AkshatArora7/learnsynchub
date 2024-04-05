@@ -43,7 +43,7 @@ const CreateCourse = () => {
   const handleCourseThumbnailSelect = (e) => {
     const file = e.target.files[0];
     setCourseThumbnail(file);
-    // Preview the selected image
+
     const reader = new FileReader();
     reader.onload = () => {
       setCourseThumbnailPreview(reader.result);
@@ -90,8 +90,8 @@ const CreateCourse = () => {
         price,
         description,
         createdBy: uid,
-        creationTime: new Date.now(),
-        lastUpdated: new Date.now(),
+        creationTime: Date.now(),
+        lastUpdated: Date.now(),
         reviews: [],
         courseThumbnail: thumbnailUrl,
         studentsEnrolled: [],
@@ -175,7 +175,7 @@ const CreateCourse = () => {
             </div>
           )}
           <label>Videos:</label>
-          <button onClick={handleModalOpen}>Add Video</button>
+          <button type="button" onClick={handleModalOpen}>Add Video</button>
           {/* Display selected videos with titles */}
           {videos.map((videoData, index) => (
             <div key={index} className="video-preview">
