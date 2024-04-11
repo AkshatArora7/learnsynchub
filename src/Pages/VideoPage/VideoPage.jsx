@@ -11,7 +11,6 @@ import NavBar from "../../Components/Widgets/NavBar/NavBar";
 
 const VideoPage = () => {
   const { courseId, videoId } = useParams();
-  console.log(courseId);
   const location = useLocation();
   const videoSnapshot = location.state.videoSnapshot;
   const [videoData, setVideoData] = useState(videoSnapshot);
@@ -22,11 +21,13 @@ const VideoPage = () => {
   useEffect(() => {
     const fetchVideoData = async () => {
       try {
+        console.log(videoSnapshot)
         if (!videoSnapshot) {
           const videoRef = firestore.collection("videos").doc(videoId);
           const videoDoc = await videoRef.get();
           if (videoDoc.exists) {
             setVideoData(videoDoc.data());
+            console.log(videoDoc.data())
           } else {
             console.log("Video not found");
           }
@@ -46,11 +47,11 @@ const VideoPage = () => {
           const faqSnapshot = await faqQuery.get();
           const faqData = faqSnapshot.docs.map((doc) => doc.data());
           setFaqData(faqData);
-          setLoading(false);
         } catch (error) {
           console.error("Error fetching FAQ data:", error);
         }
       }
+      setLoading(false);
     };
 
     fetchVideoData();
